@@ -1,0 +1,5 @@
+/* 自定义插件 nprogress 的样式 */
+
+#nprogress {
+  pointer-events: none; /* 禁止鼠标交互 */
+}
