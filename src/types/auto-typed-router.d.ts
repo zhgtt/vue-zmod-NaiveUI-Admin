@@ -69,27 +69,27 @@ declare module 'vue-router/auto-routes' {
   export interface _RouteFileInfoMap {
     'src/views/[...404].vue': {
       routes:
-        | 'not-found'
+      | 'not-found'
       views:
-        | never
+      | never
     }
     'src/views/home/index.vue': {
       routes:
-        | 'home'
+      | 'home'
       views:
-        | never
+      | never
     }
     'src/views/sysFunc/index.vue': {
       routes:
-        | 'sysFunc'
+      | 'sysFunc'
       views:
-        | never
+      | never
     }
     'src/views/sysFunc/request/index.vue': {
       routes:
-        | 'request'
+      | 'request'
       views:
-        | never
+      | never
     }
   }
 
@@ -101,8 +101,8 @@ declare module 'vue-router/auto-routes' {
    */
   export type _RouteNamesForFilePath<FilePath extends string> =
     _RouteFileInfoMap extends Record<FilePath, infer Info>
-      ? Info['routes']
-      : keyof RouteNamedMap
+    ? Info['routes']
+    : keyof RouteNamedMap
 }
 
-export {}
+export { }
