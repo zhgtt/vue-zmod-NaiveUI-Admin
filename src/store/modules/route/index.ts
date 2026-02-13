@@ -1,8 +1,6 @@
 /**
  * 创建路由相关的全局状态管理
  */
-// import { routes } from 'vue-router/auto-routes'
-
 import { useMenuStore } from '../menu'
 // import { transformRoutesToAppMenus } from './helper'
 
@@ -125,9 +123,8 @@ export const useRouteStore = defineStore(
     persist: {
       key: 'route-store', // 自定义浏览器缓存数据中的 key 的值
       storage: localStorage, // 浏览器储存方式，默认为 localStorage
-      pick: [], // 指定哪些状态需要持久化；🆎 [] 表示没有状态被持久化；undefined 表示所有状态都被持久化
-      omit: [], // 指定哪些状态不需要持久化；🆎 [] 和 undefined 表示所有状态都被持久化
-      // NOTE ... 更多配置可查看文档 https://prazdevs.github.io/pinia-plugin-persistedstate/
+      pick: [], // 指定哪些状态需要持久化；🍄 [] 表示没有状态被持久化；undefined 表示所有状态都被持久化
+      omit: [], // 指定哪些状态不需要持久化；🍄 [] 和 undefined 表示所有状态都被持久化
     },
   },
 )

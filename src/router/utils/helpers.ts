@@ -1,14 +1,15 @@
 /**
- * 路由辅助函数方法，包含在页面 初始化/刷新 时的路由转换逻辑 等
+ * @description: 处理自动生成的路由数据，将所有路由数据都封装成包含布局组件的路由
  *
- * NOTE @类型解释: RouteRecordRaw 类型 - vue-router 的内置类型，它的第一层级路由数据，必须要有 path、children 或 redirect
- * NOTE @类型解释: DefinePage 类型 - unplugin-vue-router 的内置类型，它其实是把 RouteRecordRaw 中的 children、components、component 过滤掉了，还变成了可选的类型
+ * ? @类型解释: RouteRecordRaw 类型 - vue-router 的内置类型，它的第一层级路由数据，必须要有 path、children 或 redirect
+ * // @类型解释: DefinePage 类型 - unplugin-vue-router 的内置类型，它其实是把 RouteRecordRaw 中的 children、components、component 过滤掉了，还变成了可选的类型
  */
 import type { RouteRecordRaw } from 'vue-router'
-// import type { DefinePage } from 'unplugin-vue-router/runtime'
+// // import type { DefinePage } from 'unplugin-vue-router/runtime'
 
 import { rootRoute } from '@/constants/routes'
 import { pageLayouts } from '@/constants/layout'
+import { log } from 'node:console'
 
 interface RouteTransformResult {
   baseRoutes: RouteRecordRaw[]
@@ -18,14 +19,14 @@ interface RouteTransformResult {
 const { VITE_LAYOUT_COMPONENT = 'base' } = import.meta.env
 
 /**
- * @description: 创建根路由，指定其布局容器 为 base，完善其 children 的数据 👇
+ * @description: 1️⃣ 创建根路由，指定其布局容器 为 base，完善其 children 的数据 👇
  */
 function createRootRoute(children: RouteRecordRaw[]) {
   return { ...rootRoute, component: pageLayouts.base, children }
 }
 
 /**
- * @description: 批量处理路由 👇
+ * @description: 2️⃣ 批量处理路由 👇
  * @param routes - 路由源数据
  */
 export function transformRoutes(routes: RouteRecordRaw[]) {
@@ -48,12 +49,10 @@ export function transformRoutes(routes: RouteRecordRaw[]) {
 }
 
 /**
- * @description: 处理单个路由 👇
+ * @description: 3️⃣ 处理单个路由 👇
  */
 export function processRoute(route: RouteRecordRaw, result: RouteTransformResult) {
-  // const { children } = route
-
-  // 🆎 针对有子路由的 route 进行递归处理
+  // 🍄 针对有子路由的 route 进行递归处理
   if (route.children?.length) {
     route.children = route.children.map((child) => {
       processRoute(child, result)
@@ -61,7 +60,7 @@ export function processRoute(route: RouteRecordRaw, result: RouteTransformResult
     })
   }
 
-  // 🆎 在基础布局下，针对某个路由页面是空白布局的情况，将其添加到 blankLayoutRoutes 中
+  // 🍄 在基础布局下，针对某个路由页面是空白布局的情况，将其添加到 blankLayoutRoutes 中
   if (isBlankLayout(route)) {
     result.blankLayoutRoutes.push(createBlankRoute(route))
   }

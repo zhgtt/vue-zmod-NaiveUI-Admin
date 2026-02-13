@@ -40,9 +40,6 @@ async function bootstrap() {
 
     // 挂载应用
     app.mount('#app')
-
-    // TODO 给下面这行 log 加样式
-    console.log('😄😄😄 应用启动成功 😄😄😄')
   }
   catch (error) {
     console.error('应用启动失败:', error)

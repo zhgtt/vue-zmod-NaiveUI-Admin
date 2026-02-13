@@ -1,3 +1,23 @@
 /* 全局样式 */
 
 @import 'modules/nprogress.css';
+
+* {
+  box-sizing: border-box;
+}
+
+body,
+html,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}

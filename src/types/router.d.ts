@@ -11,7 +11,7 @@ declare module 'vue-router' {
     // 当前路由的完整路径地址（会自动生成，可以忽略），也是对应菜单的跳转路径
     fullPath?: string
 
-    // 当前路由页面 document 的标题，也是对应菜单的名称，也是对应父级菜单的名称
+    // 当前路由页面 document 的标题，也是对应菜单/嵌套菜单（父级）的名称
     title?: string
 
     // 是否为缓存路由

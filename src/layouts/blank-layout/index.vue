@@ -2,18 +2,21 @@
 /**
  * 空白布局容器
  */
-import { GlobalContent } from '../modules'
-
 defineOptions({
   name: 'BlankLayout',
 })
 </script>
 
 <template>
-  <div>
-    <!-- 主体内容 -->
-    <GlobalContent />
-  </div>
+  <RouterView v-slot="{ Component, route }">
+    <main class="h-full transition-all-300">
+      <!--    <Transition> -->
+      <!--      <KeepAlive> -->
+      <component :is="Component" />
+      <!--      </KeepAlive> -->
+      <!--    </Transition> -->
+    </main>
+  </RouterView>
 </template>
 
 <style scoped>
