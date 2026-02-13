@@ -1,24 +1,27 @@
 <script setup lang="ts">
 /**
- * 基础布局容器
+ * @description: 基础布局容器
  */
-import { GlobalContent, GlobalFooter, GlobalHeader, GlobalMenu, GlobalSidebar } from '../modules'
+import { GlobalContent, GlobalFooter, GlobalHeader, GlobalSidebar } from '../modules'
+
+import { useLayoutStore, useMenuStore } from '@/store'
 
 defineOptions({
   name: 'BaseLayout',
 })
+
+const layoutStore = useLayoutStore()
+
+const { sideBarVisible } = storeToRefs(layoutStore)
 </script>
 
 <template>
-  <div class="flex">
+  <div class="h-full flex flex-col transition-all-300">
     <!-- 顶部导航 -->
     <GlobalHeader />
 
-    <!-- 侧边栏 -->
-    <GlobalSidebar />
-
-    <!-- 菜单 -->
-    <GlobalMenu />
+    <!-- 侧边栏（水平菜单模式，没有侧边栏） -->
+    <GlobalSidebar v-if="sideBarVisible" />
 
     <!-- 主体内容 -->
     <GlobalContent />

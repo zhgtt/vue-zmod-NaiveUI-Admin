@@ -32,16 +32,16 @@ export default antfu(
        * @key code - 表示一行代码的长度，默认为 80，超过这个长度，会报错，可以自行调整
        * @key ignoreComments - 表示是否忽略注释，默认为 false
        *
-       * 🆎 更多参数查看文档 https://eslint.org/docs/latest/rules/max-len
+       * 🍄 更多参数查看文档 https://eslint.org/docs/latest/rules/max-len
        *
-       * 🆎 @antfu 官方不限制长度，且不支持自动格式化折行，只能自己手动折行
+       * 🍄 @antfu 官方不限制长度，且不支持自动格式化折行，只能自己手动折行
        */
       'max-len': ['error', { code: 120, ignoreComments: true }],
 
       /**
        * @description: 统一排序 import，默认是按字母排序，可以自行配置排序规则
        *
-       * 🆎 更多参数查看文档 https://perfectionist.dev/rules/sort-imports
+       * 🍄 更多参数查看文档 https://perfectionist.dev/rules/sort-imports
        */
       'perfectionist/sort-imports': ['off', {}],
 

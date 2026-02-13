@@ -1,4 +1,4 @@
-// app 应用的 ts 配置
+// * app 应用的 ts 配置
 {
   "compilerOptions": {
     "composite": true,
@@ -21,8 +21,8 @@
     },
     "resolveJsonModule": true,
 
-    // 🐸 引入 unplugin-vue-router 的类型，防止报错
-    "types": ["unplugin-vue-router/client"],
+    // // 🐸 引入 unplugin-vue-router 的类型，防止报错
+    // "types": ["unplugin-vue-router/client"],
     "allowImportingTsExtensions": true,
 
     /* Linting */
@@ -36,5 +36,10 @@
   },
 
   // 🐸 指定 Typescript 编译的文件
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/*.d.ts"
+  ]
 }

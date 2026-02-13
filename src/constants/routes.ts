@@ -7,7 +7,7 @@ import type { RouteRecordRaw } from 'vue-router'
 const { VITE_ROOT_ROUTE_REDIRECT = '/home' } = import.meta.env
 
 /**
- * @description: 定义根路由，该路由主要用来指定所有路由页面的布局容器，它是固定的 👇
+ * @description: 定义根路由对象数据，该路由主要用来指定所有路由页面的布局容器，它是固定的 👇
  */
 export const rootRoute: Readonly<RouteRecordRaw> = {
   name: 'root',
@@ -19,7 +19,7 @@ export const rootRoute: Readonly<RouteRecordRaw> = {
 } as const
 
 /**
- * @description: 定义一些内置路由，这些路由是不参与菜单转换的，也是无视动态菜单、权限的； 🆎 根据项目需要，在这里手动添加
+ * @description: 定义一些内置路由，这些路由是不参与菜单转换的，也是无视动态菜单、权限的； 🍄 根据项目需要，在这里手动添加
  */
 export const builtinRoutePaths = [
   '/:404(.*)',
