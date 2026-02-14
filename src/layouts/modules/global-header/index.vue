@@ -17,10 +17,16 @@ const { layoutConfig, headerConfig, asyncStyle } = storeToRefs(layoutStore)
 
 const { toggleCollapsed } = menuStore
 
-// 是否在顶部显示菜单和LOGO
+const navMode = layoutConfig.value.navMode
+
+// 除 side 模式都需要在顶部显示菜单和LOGO
 const showMenuAndLogoInHeader = computed(() => {
-  const navMode = layoutConfig.value.navMode
   return ['top', 'mixedSide'].includes(navMode)
+})
+
+// 面包屑的显示与否，只在 side 模式下进行控制
+const showBreadcrumbInHeader = computed(() => {
+  return ['side'].includes(navMode) && headerConfig.value?.showBreadcrumb
 })
 </script>
 
@@ -38,7 +44,7 @@ const showMenuAndLogoInHeader = computed(() => {
       <GlobalLogo v-if="showMenuAndLogoInHeader" />
 
       <div class="header-container h-full flex-y-center flex-1-hidden px-3">
-        <!-- 菜单折叠按钮 -->
+        <!-- TODO 菜单折叠按钮，后期要将其放至侧边栏的底部 -->
         <template v-if="layoutConfig.navMode !== 'top'">
           <n-button @click="toggleCollapsed">
             <SvgIcon name="gravity-ui:bars-play" type="iconify" />
@@ -53,7 +59,7 @@ const showMenuAndLogoInHeader = computed(() => {
           </template>
 
           <!-- 面包屑（水平菜单模式，没有面包屑） -->
-          <template v-else>
+          <template v-if="showBreadcrumbInHeader">
             <GlobalBreadcrumb />
           </template>
         </div>

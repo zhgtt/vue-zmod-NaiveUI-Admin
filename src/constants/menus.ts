@@ -6,14 +6,16 @@
 export const customMenuItems: APP.Menu.MenuItem[] = [
   {
     key: 'github',
-    label: 'GitHub 仓库',
+    label: 'GitHub 仓库（外链）',
     href: 'https://github.com',
-    parentKey: 'learning',
+    parentKey: 'sysFunc',
     order: 3,
+    disabled: true,
+    iconConfig: { name: 'mac-finder', type: 'icon-park' },
   },
   {
     key: 'naive-ui',
-    label: 'Naive-UI 组件库',
+    label: 'Naive-UI 组件库（外链）',
     href: 'https://www.naiveui.com/zh-CN/light',
     parentKey: '',
     order: 6,

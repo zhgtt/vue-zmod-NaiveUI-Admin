@@ -172,7 +172,7 @@ export const useMenuStore = defineStore(
 
       // 如果是外链菜单，直接打开链接
       if ('href' in menuItem) {
-        window.open(menuItem.href, menuItem.target || '_blank')
+        window.open(menuItem.href, '_blank')
 
         // 恢复菜单高亮状态为当前selectedKey
         menuModelValue.value = selectedKey.value

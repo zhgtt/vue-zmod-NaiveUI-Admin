@@ -33,6 +33,9 @@ export const useLayoutStore = defineStore(
     // 底部栏配置
     const footerConfig = ref<APP.Layout.FooterConfig>({ ...defaultFooterConfig })
 
+    // 标签栏配置
+    const tabsConfig = ref<APP.Layout.TabsConfig>({ ...defaultTabsConfig })
+
     // 动态更改布局组件的样式
     const asyncStyle = ref({
       sideOffsetTop: 0, // 侧边栏距离窗口顶部的距离（用于 siderBar 组件）
@@ -92,6 +95,11 @@ export const useLayoutStore = defineStore(
       footerConfig.value = { ...footerConfig.value, ...config }
     }
 
+    // Fun5️⃣ 更新标签栏配置
+    function updateTabsConfig(config: Partial<APP.Layout.FooterConfig>) {
+      tabsConfig.value = { ...tabsConfig.value, ...config }
+    }
+
     return {
       layoutConfig,
       updateLayoutConfig,
@@ -107,6 +115,9 @@ export const useLayoutStore = defineStore(
 
       footerConfig,
       updateFooterConfig,
+
+      tabsConfig,
+      updateTabsConfig,
 
       asyncStyle,
     }

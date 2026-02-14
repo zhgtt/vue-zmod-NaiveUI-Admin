@@ -7,14 +7,8 @@ declare namespace APP.Layout {
 
   // 顶部栏配置
   interface HeaderConfig {
-    // 是否固定顶部
-    fixed?: boolean
-
     // 顶部栏高度，默认为 60px
     height: number
-
-    // 是否显示 logo
-    showLogo?: boolean
 
     // 顶部栏标题
     title?: string
@@ -38,7 +32,7 @@ declare namespace APP.Layout {
     show?: boolean
 
     // 是否固定标签栏
-    fixed?: boolean
+    // fixed?: boolean
 
     // 标签栏高度
     height?: number
@@ -67,12 +61,6 @@ declare namespace APP.Layout {
 
   // 布局配置类型
   interface LayoutConfig {
-    // 内容区域宽度（固定宽度或者流式宽度）
-    contentWidth?: 'fixed' | 'fluid'
-
-    // 菜单折叠按钮的位置
-    menuTogglePosition?: 'header' | 'sidebar'
-
     /**
      * 🍄 布局导航模式（菜单的位置）
      *
@@ -81,5 +69,11 @@ declare namespace APP.Layout {
      * top - 顶部水平（菜单都在顶部栏）
      */
     navMode: 'side' | 'top' | 'mixedSide'
+
+    // 内容区域宽度（固定宽度或者流式宽度）
+    // contentWidth?: 'fixed' | 'fluid'
+
+    // 菜单折叠按钮的位置
+    // menuTogglePosition?: 'header' | 'sidebar'
   }
 }

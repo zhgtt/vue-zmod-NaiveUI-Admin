@@ -7,13 +7,15 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import { GlobalComponents } from 'vue'
 
-export { }
+export {}
 
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
     NAvatar: typeof import('naive-ui')['NAvatar']
     NBadge: typeof import('naive-ui')['NBadge']
+    NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']
+    NBreadcrumbItem: typeof import('naive-ui')['NBreadcrumbItem']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NDropdown: typeof import('naive-ui')['NDropdown']
@@ -22,6 +24,8 @@ declare module 'vue' {
     NMenu: typeof import('naive-ui')['NMenu']
     NSlider: typeof import('naive-ui')['NSlider']
     NSpace: typeof import('naive-ui')['NSpace']
+    NTabPane: typeof import('naive-ui')['NTabPane']
+    NTabs: typeof import('naive-ui')['NTabs']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./../components/custom/SvgIcon.vue')['default']
@@ -32,6 +36,8 @@ declare module 'vue' {
 declare global {
   const NAvatar: typeof import('naive-ui')['NAvatar']
   const NBadge: typeof import('naive-ui')['NBadge']
+  const NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']
+  const NBreadcrumbItem: typeof import('naive-ui')['NBreadcrumbItem']
   const NButton: typeof import('naive-ui')['NButton']
   const NCard: typeof import('naive-ui')['NCard']
   const NDropdown: typeof import('naive-ui')['NDropdown']
@@ -40,6 +46,8 @@ declare global {
   const NMenu: typeof import('naive-ui')['NMenu']
   const NSlider: typeof import('naive-ui')['NSlider']
   const NSpace: typeof import('naive-ui')['NSpace']
+  const NTabPane: typeof import('naive-ui')['NTabPane']
+  const NTabs: typeof import('naive-ui')['NTabs']
   const RouterLink: typeof import('vue-router')['RouterLink']
   const RouterView: typeof import('vue-router')['RouterView']
   const SvgIcon: typeof import('./../components/custom/SvgIcon.vue')['default']

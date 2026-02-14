@@ -1,5 +1,5 @@
 /**
- * 创建、转换、处理 路由数据
+ * @description: 创建、转换、处理 路由数据
  *
  */
 // 引入自动生成的 auto-typed-router.d.ts 文件中的路由;
@@ -7,7 +7,7 @@
 import { routes } from 'vue-router/auto-routes'
 import type { RouteRecordRaw } from 'vue-router'
 
-import { transformRoutes } from '../utils/helpers'
+import { transformRoutes } from './helpers'
 
 import { rootRoute } from '@/constants/routes'
 import { pageLayouts } from '@/constants/layout'

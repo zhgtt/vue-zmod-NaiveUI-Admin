@@ -1,3 +1,7 @@
+/**
+ * @description: 公共的、菜单相关的辅助工具函数
+ */
+
 import { find } from 'es-toolkit/compat'
 import { flattenDeep } from 'es-toolkit/array'
 
@@ -25,7 +29,7 @@ export function flattenMenus(menus: APP.Menu.MenuItem[]): APP.Menu.MenuItem[] {
 }
 
 /**
- * @description: 2️⃣ 根据路由路径path查找对应的菜单项
+ * @description: 2️⃣ 根据路由路径 path 查找其对应的菜单项
  * @param {APP.Menu.MenuItem[]} menus - 菜单数组
  * @param {string} path - 要查找的菜单path
  */
@@ -35,7 +39,7 @@ export function findMenuByPath(menus: APP.Menu.MenuItem[], path: string) {
 }
 
 /**
- * @description: 3️⃣ 根据菜单key查找对应的菜单项
+ * @description: 3️⃣ 根据菜单 key 查找其对应的菜单项
  * @param {APP.Menu.MenuItem[]} menus - 菜单数组
  * @param {string} key - 要查找的菜单key
  */
@@ -47,20 +51,28 @@ export function findMenuByKey(menus: APP.Menu.MenuItem[], key: string) {
 }
 
 /**
- * @description: 4️⃣ 查找子菜单所属的根菜单键值
+ * @description: 4️⃣ 根据菜单 key 查找其所属的根菜单项
  * @param {APP.Menu.MenuItem[]} menus - 菜单数组
- * @param {string} childKey - 子菜单的key
+ * @param {string} key - 菜单的key
+ * @returns {APP.Menu.MenuItem | null} - 返回子菜单所属的根菜单数据，未找到返回 null
  */
-export function findRootMenuKeyByChild(menus: APP.Menu.MenuItem[], childKey: string): string | null {
+export function findRootMenuByKey(menus: APP.Menu.MenuItem[], key: string): APP.Menu.MenuItem | null {
+  // 检查是否为根菜单，是的话直接返回
+  const rootMenu = find(menus, { key }) // 这里其实只是找第一层的数据
+  if (rootMenu)
+    return rootMenu
+
+  // 如果不是根菜单，则在子菜单中查找并返回其所属的根菜单
   for (const root of menus) {
-    if (root.children && findMenuByKey(root.children, childKey))
-      return root.key
+    if (root.children && findMenuByKey(root.children, key)) {
+      return root
+    }
   }
   return null
 }
 
 /**
- * @description: 5️⃣ 构建菜单键值映射关系，用于快速查找子菜单所属的根菜单（在初始化数据的时候使用）
+ * @description: 5️⃣ 构建菜单键值映射关系，用于快速查找子菜单所属的根菜单的 key（在初始化数据的时候使用）
  * @param {APP.Menu.MenuItem[]} menus - 菜单数组
  * @param {Record<string, string>} keyMap - 存储映射关系的对象
  * @param {string} parentKey - 父级菜单的key
@@ -90,25 +102,48 @@ export function buildMenuKeyMap(
 }
 
 /**
- * @description: 获取菜单的展开路径
+ * @description: 6️⃣ 根据菜单 key 递归查找从 根菜单到当前菜单 的范围路径
+ * ? 可用于获取当前菜单对应的面包屑数据
+ *
+ * @param {APP.Menu.MenuItem[]} menus - 菜单数组
+ * @param {string} key - 菜单的key
+ * @returns {APP.Menu.MenuItem[] | null} - 返回从当前节点到目标的路径数组，未找到返回 null
  */
-export function getMenuOpenKeys(menus: APP.Menu.MenuItem[], path: string): string[] {
-  const openKeys: string[] = []
-  const findPath = (items: APP.Menu.MenuItem[], targetPath: string, parents: string[] = []) => {
-    for (const item of items) {
-      const currentPath = [...parents, item.key]
-      if (item.routePath === targetPath) {
-        openKeys.push(...parents)
-        return true
-      }
-      if (item.children?.length && findPath(item.children, targetPath, currentPath)) {
-        openKeys.push(...parents)
-        return true
+export function findPathToNode(menus: APP.Menu.MenuItem[], key: string): APP.Menu.MenuItem[] | null {
+  if (!key)
+    return null
+
+  // 查找目标菜单所属的根菜单
+  const rootMenu = findRootMenuByKey(menus, key)
+  if (!rootMenu)
+    return null
+
+  // 如果目标菜单就是根菜单，直接返回包含自身的路径
+  if (rootMenu.key === key)
+    return [rootMenu]
+
+  // 递归查找路径的辅助函数
+  const findPath = (
+    menu: APP.Menu.MenuItem,
+    targetKey: string,
+    path: APP.Menu.MenuItem[] = [],
+  ): APP.Menu.MenuItem[] | null => {
+    path.push(menu)
+
+    if (menu.key === targetKey)
+      return path
+
+    if (menu.children?.length) {
+      for (const child of menu.children) {
+        const result = findPath(child, targetKey, [...path])
+        if (result)
+          return result
       }
     }
-    return false
+
+    // 未找到，返回 null
+    return null
   }
 
-  findPath(menus, path)
-  return [...new Set(openKeys)]
+  return findPath(rootMenu, key)
 }

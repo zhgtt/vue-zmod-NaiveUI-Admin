@@ -1,5 +1,6 @@
 /**
- * 处理菜单相关的逻辑
+ * @description: 辅助工具函数
+ * 处理菜单相关的逻辑、将路由数据转换成对应的菜单数据
  */
 import type { RouteRecordRaw } from 'vue-router'
 
@@ -19,12 +20,13 @@ function createBaseMenuItem(route: RouteRecordRaw): APP.Menu.MenuItem {
   const menuProps = meta?.menuProps || {}
 
   // 🍄 isChildMenu 默认为 true，也就是所有的目录默认都为 菜单项
-  const { isChildMenu = true, customLabel, ...restMenuProps } = menuProps
+  const { customLabel, ...restMenuProps } = menuProps
 
   return {
     key: name as string,
     label: customLabel || meta?.title || name as string,
-    ...(isChildMenu && { routePath: meta?.fullPath }), // 🍄 所在目录为 菜单项，才有 routePath 属性
+    // ...(isChildMenu && { routePath: meta?.fullPath }), // 🍄 所在目录为 菜单项，才有 routePath 属性
+    routePath: meta?.fullPath, // 不区分是否为 菜单项，都有 routePath 属性（为了兼容面包屑的路由跳转）
     ...restMenuProps,
   }
 }
@@ -232,5 +234,5 @@ function sortMenuItems(items: APP.Menu.MenuItem[]): APP.Menu.MenuItem[] {
 }
 
 /**
- * @description: 7️⃣ 转换动态菜单 👇
+ * @description: 7️⃣ TODO 转换动态菜单（因为有权限，会影响面包屑的跳转，尤其是嵌套路由） 👇
  */

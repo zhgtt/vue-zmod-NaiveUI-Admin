@@ -18,16 +18,13 @@ export const pageLayouts: Record<APP.Layout.Types, RouteComponent | (() => Promi
 // 2️⃣ 默认布局配置
 export const defaultLayoutConfig: APP.Layout.LayoutConfig = {
   navMode: 'side',
-  // menuTogglePosition: 'header',
 }
 
 // 2️⃣ 默认顶部栏配置
 export const defaultHeaderConfig: APP.Layout.HeaderConfig = {
-  // fixed: true,
   height: 60,
-  // showLogo: true,
   title: 'ZMod-Admin',
-  // showBreadcrumb: true,
+  showBreadcrumb: true,
 }
 
 // 3️⃣ 默认侧边栏配置
@@ -38,8 +35,8 @@ export const defaultSidebarConfig: APP.Layout.SidebarConfig = {
 
 // 4️⃣ 默认标签栏配置
 export const defaultTabsConfig: APP.Layout.TabsConfig = {
-  // show: true,
-  // height: 44,
+  show: true,
+  height: 44,
 }
 
 // 5️⃣ 默认页脚配置

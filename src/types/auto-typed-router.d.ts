@@ -47,9 +47,58 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    'multiMenus': RouteRecordInfo<
+      'multiMenus',
+      '/sysFunc/multiMenus',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    'menu1': RouteRecordInfo<
+      'menu1',
+      '/sysFunc/multiMenus/menu1',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    'menu2': RouteRecordInfo<
+      'menu2',
+      '/sysFunc/multiMenus/menu2',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     'request': RouteRecordInfo<
       'request',
       '/sysFunc/request',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    'sysMgmt': RouteRecordInfo<
+      'sysMgmt',
+      '/sysMgmt',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    'codemapSettings': RouteRecordInfo<
+      'codemapSettings',
+      '/sysMgmt/codemapSettings',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    'menuSettings': RouteRecordInfo<
+      'menuSettings',
+      '/sysMgmt/menuSettings',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    'userSettings': RouteRecordInfo<
+      'userSettings',
+      '/sysMgmt/userSettings',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -69,27 +118,69 @@ declare module 'vue-router/auto-routes' {
   export interface _RouteFileInfoMap {
     'src/views/[...404].vue': {
       routes:
-      | 'not-found'
+        | 'not-found'
       views:
-      | never
+        | never
     }
     'src/views/home/index.vue': {
       routes:
-      | 'home'
+        | 'home'
       views:
-      | never
+        | never
     }
     'src/views/sysFunc/index.vue': {
       routes:
-      | 'sysFunc'
+        | 'sysFunc'
       views:
-      | never
+        | never
+    }
+    'src/views/sysFunc/multiMenus/index.vue': {
+      routes:
+        | 'multiMenus'
+      views:
+        | never
+    }
+    'src/views/sysFunc/multiMenus/menu1/index.vue': {
+      routes:
+        | 'menu1'
+      views:
+        | never
+    }
+    'src/views/sysFunc/multiMenus/menu2/index.vue': {
+      routes:
+        | 'menu2'
+      views:
+        | never
     }
     'src/views/sysFunc/request/index.vue': {
       routes:
-      | 'request'
+        | 'request'
       views:
-      | never
+        | never
+    }
+    'src/views/sysMgmt/index.vue': {
+      routes:
+        | 'sysMgmt'
+      views:
+        | never
+    }
+    'src/views/sysMgmt/codemapSettings/index.vue': {
+      routes:
+        | 'codemapSettings'
+      views:
+        | never
+    }
+    'src/views/sysMgmt/menuSettings/index.vue': {
+      routes:
+        | 'menuSettings'
+      views:
+        | never
+    }
+    'src/views/sysMgmt/userSettings/index.vue': {
+      routes:
+        | 'userSettings'
+      views:
+        | never
     }
   }
 
@@ -101,8 +192,8 @@ declare module 'vue-router/auto-routes' {
    */
   export type _RouteNamesForFilePath<FilePath extends string> =
     _RouteFileInfoMap extends Record<FilePath, infer Info>
-    ? Info['routes']
-    : keyof RouteNamedMap
+      ? Info['routes']
+      : keyof RouteNamedMap
 }
 
-export { }
+export {}

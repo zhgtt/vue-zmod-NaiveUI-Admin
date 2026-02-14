@@ -7,7 +7,7 @@ import GlobalLogo from './global-logo/index.vue' // logo 展示
 import GlobalMenu from './global-menu/index.vue' // 菜单展示
 // import GlobalSearch from './global-search/index.vue' // 搜索
 import GlobalSidebar from './global-sidebar/index.vue' // 侧边栏
-import GlobalTabs from './global-tabs/index.vue' // 标签页栏
+import GlobalPageTabs from './global-page-tabs/index.vue' // 标签页栏
 
 export {
   GlobalActions,
@@ -17,7 +17,7 @@ export {
   GlobalHeader,
   GlobalLogo,
   GlobalMenu,
+  GlobalPageTabs,
   // GlobalSearch,
   GlobalSidebar,
-  GlobalTabs,
 }

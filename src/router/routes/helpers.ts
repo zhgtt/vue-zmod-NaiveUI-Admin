@@ -1,5 +1,6 @@
 /**
- * @description: 处理自动生成的路由数据，将所有路由数据都封装成包含布局组件的路由
+ * @description: 辅助工具函数
+ * 处理和转换自动生成的路由数据，将所有路由数据都封装成包含布局组件的路由
  *
  * ? @类型解释: RouteRecordRaw 类型 - vue-router 的内置类型，它的第一层级路由数据，必须要有 path、children 或 redirect
  * // @类型解释: DefinePage 类型 - unplugin-vue-router 的内置类型，它其实是把 RouteRecordRaw 中的 children、components、component 过滤掉了，还变成了可选的类型
@@ -51,7 +52,7 @@ export function transformRoutes(routes: RouteRecordRaw[]) {
 /**
  * @description: 3️⃣ 处理单个路由 👇
  */
-export function processRoute(route: RouteRecordRaw, result: RouteTransformResult) {
+function processRoute(route: RouteRecordRaw, result: RouteTransformResult) {
   // 🍄 针对有子路由的 route 进行递归处理
   if (route.children?.length) {
     route.children = route.children.map((child) => {

@@ -2,7 +2,6 @@
  * 创建路由相关的全局状态管理
  */
 import { useMenuStore } from '../menu'
-// import { transformRoutesToAppMenus } from './helper'
 
 const { VITE_LAYOUT_COMPONENT = 'base' } = import.meta.env
 
@@ -51,8 +50,6 @@ export const useRouteStore = defineStore(
         console.error('路由初始化失败:', error)
         throw error
       }
-
-      isInitAuthRoute.value = false
     }
 
     /**
