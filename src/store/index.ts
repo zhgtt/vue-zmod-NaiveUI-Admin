@@ -13,6 +13,7 @@ import piniaPluginPersistence from 'pinia-plugin-persistedstate'
 // 导出所有store模块
 export * from './modules/layout'
 export * from './modules/menu'
+export * from './modules/pageTabs'
 export * from './modules/route'
 
 /**

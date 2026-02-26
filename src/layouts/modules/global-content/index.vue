@@ -19,7 +19,7 @@ const { asyncStyle } = storeToRefs(layoutStore)
       class="flex flex-col flex-grow transition-all-300 overflow-y-auto"
       :style="{ paddingLeft: `${asyncStyle.contentOffsetLeft}px` }"
     >
-      <div class="p-4 bg-#F5F8FA">
+      <div class="p-4 bg-#F5F8FA flex-grow">
         <!--    <Transition> -->
         <!--      <KeepAlive> -->
         <component :is="Component" />

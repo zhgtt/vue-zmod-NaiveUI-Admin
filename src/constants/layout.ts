@@ -17,7 +17,7 @@ export const pageLayouts: Record<APP.Layout.Types, RouteComponent | (() => Promi
 
 // 2️⃣ 默认布局配置
 export const defaultLayoutConfig: APP.Layout.LayoutConfig = {
-  navMode: 'side',
+  navMode: 'side', // 布局模式
 }
 
 // 2️⃣ 默认顶部栏配置
@@ -30,20 +30,20 @@ export const defaultHeaderConfig: APP.Layout.HeaderConfig = {
 // 3️⃣ 默认侧边栏配置
 export const defaultSidebarConfig: APP.Layout.SidebarConfig = {
   width: 260,
-  collapsedWidth: 90,
+  collapsedWidth: 90, // 折叠宽度
 }
 
 // 4️⃣ 默认标签栏配置
 export const defaultTabsConfig: APP.Layout.TabsConfig = {
-  show: true,
-  height: 44,
+  show: true, // 是否显示
+  height: 50,
 }
 
 // 5️⃣ 默认页脚配置
 export const defaultFooterConfig: APP.Layout.FooterConfig = {
   // show: true,
   // fixed: false,
-  height: 48,
+  height: 50,
 }
 
 // 6️⃣ 默认主题配置

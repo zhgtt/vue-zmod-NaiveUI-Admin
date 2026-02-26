@@ -33,7 +33,7 @@ const showBreadcrumbInHeader = computed(() => {
 <template>
   <!-- ? flex-shrink-0：作用防止元素在 flex 容器中被压缩 -->
   <header
-    class="flex-shrink-0 w-full transition-all-300 absolute top-0 left-0 z-97"
+    class="shrink-0 w-full transition-all-300 absolute top-0 left-0 z-97"
     :style="{
       height: `${headerConfig.height}px`,
       paddingLeft: `${asyncStyle.headerOffsetLeft}px`,
@@ -70,8 +70,8 @@ const showBreadcrumbInHeader = computed(() => {
     </div>
   </header>
 
-  <!-- NOTE 再加一个高度一样的 div，为了能 header 正常吸顶 -->
-  <div class="flex-shrink-0 overflow-hidden" :style="{ height: `${headerConfig.height}px` }" />
+  <!-- * 再加一个高度一样的 div，为了能 header 正常吸顶 -->
+  <div class="shrink-0 overflow-hidden" :style="{ height: `${headerConfig.height}px` }" />
 </template>
 
 <style scoped>

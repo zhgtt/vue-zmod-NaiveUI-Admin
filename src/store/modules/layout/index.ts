@@ -1,5 +1,5 @@
 /**
- * 创建布局相关的全局状态管理模块
+ * @description: 创建布局相关的全局状态管理模块
  */
 import { useMenuStore } from '@/store'
 
@@ -55,7 +55,7 @@ export const useLayoutStore = defineStore(
         sideOffsetTop: ['mixedSide'].includes(mode) ? headerHeight : 0,
         headerOffsetLeft: ['side'].includes(mode) ? sideWidth : 0,
         contentOffsetLeft: !['top'].includes(mode) ? sideWidth : 0,
-        sideBarZIndex: ['side', 'mixedSide'].includes(mode) ? 95 : 99,
+        sideBarZIndex: ['side', 'mixedSide'].includes(mode) ? 99 : 95,
       }
     })
 

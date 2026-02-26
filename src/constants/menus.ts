@@ -11,7 +11,7 @@ export const customMenuItems: APP.Menu.MenuItem[] = [
     parentKey: 'sysFunc',
     order: 3,
     disabled: true,
-    iconConfig: { name: 'mac-finder', type: 'icon-park' },
+    iconConfig: { name: 'mac-finder', type: 'iconify' },
   },
   {
     key: 'naive-ui',
@@ -19,6 +19,6 @@ export const customMenuItems: APP.Menu.MenuItem[] = [
     href: 'https://www.naiveui.com/zh-CN/light',
     parentKey: '',
     order: 6,
-    iconConfig: { name: 'mac-finder', type: 'icon-park' },
+    iconConfig: { name: 'mac-finder', type: 'iconify' },
   },
 ]

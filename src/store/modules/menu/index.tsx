@@ -2,7 +2,11 @@
  * @description: 创建菜单相关的全局状态管理
  */
 import type { MenuOption } from 'naive-ui'
+
 import { routes } from 'vue-router/auto-routes'
+
+// * watchImmediate - 立即执行的 watch 简写（{immediate: true}）
+import { watchImmediate } from '@vueuse/core'
 
 import SvgIcon from '@/components/custom/SvgIcon.vue'
 import type { IconProps } from '@/components/custom/SvgIcon.vue'
@@ -39,6 +43,9 @@ export const useMenuStore = defineStore(
     // 侧边栏菜单是否折叠
     const collapsed = ref(false)
 
+    /**
+     * @description: 计算属性
+     */
     // 1️⃣ 获取一级菜单数据（仅用于 mixedSide 模式下的一级菜单组件）
     const rootMenuData = computed<APP.Menu.MenuItem[]>(() => {
       return menuData.value.map(menu => ({ ...menu, children: [] }))
@@ -69,8 +76,11 @@ export const useMenuStore = defineStore(
       return buildMenuKeyMap(menuData.value)
     })
 
-    // 5️⃣ 监听路由变化，设置当前菜单布局模式下的选中菜单项、侧边栏的显隐状态
-    watch(
+    /**
+     * @description: 监听函数
+     */
+    // 1️⃣ 监听路由变化，设置当前菜单布局模式下的选中菜单项、侧边栏的显隐状态
+    watchImmediate(
       () => vueRoutes.path,
       (path) => {
         if (path === '/')
@@ -131,10 +141,9 @@ export const useMenuStore = defineStore(
         const handler = layoutHandlers[navMode as keyof typeof layoutHandlers]
         handler?.()
       },
-      { immediate: true },
     )
 
-    // 4️⃣ 监听布局模式，重置一些菜单的状态
+    // 2️⃣ 监听布局模式，重置一些菜单的状态
     watch(
       () => layoutStore.layoutConfig.navMode,
       () => {
@@ -143,15 +152,16 @@ export const useMenuStore = defineStore(
       { immediate: true },
     )
 
-    // 6️⃣ 监听 selectedKey 变化，记录 menuModelValue 的值
+    // 3️⃣ 监听 selectedKey 变化，记录 menuModelValue 的值
     watch(selectedKey, (newKey) => {
       if (newKey)
         menuModelValue.value = newKey
     })
 
     /**
-     * @description: Fun1️⃣ 根据路由数据获取所有的静态菜单
+     * @description: 功能函数
      */
+    // Fun1️⃣ 根据路由数据获取所有的静态菜单
     async function initStaticMenus() {
       try {
         // resetMenuState()
@@ -164,9 +174,7 @@ export const useMenuStore = defineStore(
       }
     }
 
-    /**
-     * @description: Fun2️⃣ 根据菜单项执行跳转的逻辑（包含外链），用于 vertical-menu 和 horizontal-menu 组件
-     */
+    // Fun2️⃣ 根据菜单项执行跳转的逻辑（包含外链），用于 vertical-menu 和 horizontal-menu 组件
     function navigateToMenuItem(key: string, menuOption: MenuOption) {
       const menuItem = menuOption as APP.Menu.MenuItem
 
@@ -186,9 +194,7 @@ export const useMenuStore = defineStore(
       menuRouterPush(menuItem)
     }
 
-    /**
-     * @description: Fun3️⃣ 执行路由跳转
-     */
+    // Fun3️⃣ 执行路由跳转
     function menuRouterPush(menuItem: APP.Menu.MenuItem) {
       if ('routePath' in menuItem) {
         vueRouter.push({
@@ -198,16 +204,12 @@ export const useMenuStore = defineStore(
       }
     }
 
-    /**
-     * @description: Fun4️⃣ 切换菜单折叠状态
-     */
+    // Fun4️⃣ 切换菜单折叠状态
     function toggleCollapsed() {
       collapsed.value = !collapsed.value
     }
 
-    /**
-     * @description: Fun5️⃣ 设置菜单折叠状态
-     */
+    // Fun5️⃣ 设置菜单折叠状态
     function setCollapsed(value: boolean) {
       collapsed.value = value
     }
@@ -232,10 +234,7 @@ export const useMenuStore = defineStore(
       selectedRootKey.value = null
     }
 
-    /**
-     * TODO
-     * @description: 搜索菜单项
-     */
+    // TODO 搜索菜单项
     // function searchMenuItems(keyword: string) {
     //   if (!keyword)
     //     return []
@@ -287,6 +286,10 @@ export const useMenuStore = defineStore(
    */
   {
     // 状态持久化储存插件配置
-    persist: {},
+    persist: {
+      key: 'menu-store',
+      storage: localStorage,
+      pick: ['selectedKey'],
+    },
   },
 )

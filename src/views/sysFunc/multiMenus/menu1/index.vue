@@ -4,7 +4,7 @@ definePage({
   meta: {
     title: '菜单1',
     menuProps: {
-      iconConfig: { name: 'home', type: 'icon-park' },
+      iconConfig: { name: 'solar:home-angle-2-broken', type: 'iconify' },
       order: 1,
     },
   },

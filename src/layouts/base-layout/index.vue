@@ -12,7 +12,7 @@ defineOptions({
 
 const layoutStore = useLayoutStore()
 
-const { sideBarVisible } = storeToRefs(layoutStore)
+const { sideBarVisible, tabsConfig } = storeToRefs(layoutStore)
 </script>
 
 <template>
@@ -21,7 +21,7 @@ const { sideBarVisible } = storeToRefs(layoutStore)
     <GlobalHeader />
 
     <!-- 标签栏 -->
-    <GlobalPageTabs />
+    <GlobalPageTabs v-if="tabsConfig?.show" />
 
     <!-- 侧边栏（水平菜单模式，没有侧边栏） -->
     <GlobalSidebar v-if="sideBarVisible" />

@@ -15,7 +15,7 @@ const { footerConfig, asyncStyle } = storeToRefs(layoutStore)
 
 <template>
   <footer
-    class="flex-shrink-0 transition-all-300 z-93"
+    class="shrink-0 transition-all-300 z-93"
     :style="{
       paddingLeft: `${asyncStyle.contentOffsetLeft}px`,
       height: `${footerConfig.height}px`,

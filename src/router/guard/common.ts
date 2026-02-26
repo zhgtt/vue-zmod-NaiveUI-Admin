@@ -5,6 +5,8 @@ import type { Router } from 'vue-router'
 
 import { useTitle } from '@vueuse/core'
 
+import { useLayoutStore, usePageTabsStore } from '@/store'
+
 export function createCommonRouteGuard(router: Router) {
   /**
    * @description: 路由前置守卫，用于在 跳转到新路由前 执行逻辑 👇
@@ -21,15 +23,33 @@ export function createCommonRouteGuard(router: Router) {
    * @description: 路由后置守卫，用于在 路由跳转完成后 执行逻辑 👇
    */
   router.afterEach((to) => {
+    console.log('to: ', to)
+
     // 关闭进度条
     window.NProgress?.done()
 
     /**
-     * @description: 动态设置浏览器标题，支持国际化 👇
+     * @description: 1️⃣ 动态设置浏览器标题，支持国际化 👇
      */
     const { title: documentTitle } = to.meta
     if (documentTitle) {
       useTitle(documentTitle)
+    }
+
+    /**
+     * @description: 2️⃣ 动态将当前路由页面添加到标签栏中 👇
+     */
+    // 获取布局配置
+    const layoutStore = useLayoutStore()
+
+    if (layoutStore.tabsConfig?.show === true) {
+      // 默认都会添加标签页，除非明确设置为 false 或是特殊页面
+      const shouldAddTab = to.meta?.showInTabs !== false
+      // 定义一个立即执行函数
+      shouldAddTab && (() => {
+        const pageTabsStore = usePageTabsStore()
+        pageTabsStore.addTab(to)
+      })()
     }
   })
 }

@@ -222,7 +222,8 @@ function mergeCustomMenus(menus: APP.Menu.MenuItem[]) {
  * @description: 6️⃣ 拆分：菜单排序 👇
  */
 function sortMenuItems(items: APP.Menu.MenuItem[]): APP.Menu.MenuItem[] {
-  // 🍄 确保所有菜单项都有 order 值，未设置的默认为最大值，排在末尾
+  // 🍄 TODO 这里后期需要改，不能默认用最大值
+  // 确保所有菜单项都有 order 值，未设置的默认为最大值，排在末尾
   const itemsWithOrder = items.map(item => ({
     ...item,
     order: item.order ?? Number.MAX_SAFE_INTEGER,

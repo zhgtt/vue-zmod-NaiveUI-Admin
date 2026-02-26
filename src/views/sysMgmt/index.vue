@@ -5,7 +5,7 @@ definePage({
   meta: {
     title: '系统管理',
     menuProps: {
-      iconConfig: { name: 'home', type: 'icon-park' },
+      iconConfig: { name: 'solar:home-angle-2-broken', type: 'iconify' },
       order: 3,
       isChildMenu: false,
     },

@@ -1,6 +1,7 @@
 <script setup lang="tsx">
 /**
- * 菜单渲染组件
+ * @description: TODO 菜单渲染组件
+ * ? 还需支持动态图标、动态菜单、动态徽章
  */
 import type { MenuProps } from 'naive-ui'
 

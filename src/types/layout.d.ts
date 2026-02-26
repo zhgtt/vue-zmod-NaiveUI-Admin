@@ -5,6 +5,24 @@ declare namespace APP.Layout {
   // 布局类型
   type Types = 'base' | 'blank'
 
+  // 布局配置类型
+  interface LayoutConfig {
+    /**
+     * 🍄 布局导航模式（菜单的位置）
+     *
+     * side - 侧边垂直（菜单都在侧边栏，侧边栏会遮挡顶部栏，默认情况）
+     * mixedSide - 混合垂直（顶部为 一级菜单，其他层级的放在侧边，侧边栏不会遮挡顶部栏）
+     * top - 顶部水平（菜单都在顶部栏）
+     */
+    navMode: 'side' | 'top' | 'mixedSide'
+
+    // 内容区域宽度（固定宽度或者流式宽度）
+    // contentWidth?: 'fixed' | 'fluid'
+
+    // 菜单折叠按钮的位置
+    // menuTogglePosition?: 'header' | 'sidebar'
+  }
+
   // 顶部栏配置
   interface HeaderConfig {
     // 顶部栏高度，默认为 60px
@@ -57,23 +75,5 @@ declare namespace APP.Layout {
 
     // 是否显示设置抽屉
     showSettingDrawer?: boolean
-  }
-
-  // 布局配置类型
-  interface LayoutConfig {
-    /**
-     * 🍄 布局导航模式（菜单的位置）
-     *
-     * side - 侧边垂直（菜单都在侧边栏，侧边栏会遮挡顶部栏，默认情况）
-     * mixedSide - 混合垂直（顶部为 一级菜单，其他层级的放在侧边，侧边栏不会遮挡顶部栏）
-     * top - 顶部水平（菜单都在顶部栏）
-     */
-    navMode: 'side' | 'top' | 'mixedSide'
-
-    // 内容区域宽度（固定宽度或者流式宽度）
-    // contentWidth?: 'fixed' | 'fluid'
-
-    // 菜单折叠按钮的位置
-    // menuTogglePosition?: 'header' | 'sidebar'
   }
 }
