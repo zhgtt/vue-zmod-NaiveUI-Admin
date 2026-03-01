@@ -11,12 +11,8 @@ defineOptions({
 })
 
 const layoutStore = useLayoutStore()
-// const menuStore = useMenuStore()
 
 const { layoutConfig, sideBarWidth, asyncStyle } = storeToRefs(layoutStore)
-// const { collapsed } = storeToRefs(menuStore)
-
-// const { updateSideBarConfig } = layoutStore
 
 // 是否显示 logo
 const isShowLogo = computed(() => {

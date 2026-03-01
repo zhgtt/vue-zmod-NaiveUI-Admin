@@ -1,6 +1,7 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 /**
- * 菜单渲染组件 - 垂直菜单
+ * @description: 菜单渲染组件 - 侧边垂直菜单
+ * TODO 需要去掉悬浮状态，右键打开新窗口后，悬浮状态还在
  */
 import { useLayoutStore, useMenuStore } from '@/store'
 
@@ -12,10 +13,9 @@ const layoutStore = useLayoutStore()
 const menuStore = useMenuStore()
 
 // NOTE 动态变化的状态就用 storeToRefs，这样状态就具有响应式
-const { verticalMenuData, menuModelValue, collapsed } = storeToRefs(menuStore)
+const { verticalMenuData, menuModelValue, expandedKeys } = storeToRefs(menuStore)
 
-const { sideBarConfig } = layoutStore
-const { renderMenuLabel, renderMenuIcon, navigateToMenuItem } = menuStore
+const { sideBarConfig, collapsed } = storeToRefs(layoutStore)
 </script>
 
 <template>
@@ -24,11 +24,13 @@ const { renderMenuLabel, renderMenuIcon, navigateToMenuItem } = menuStore
     mode="vertical"
     :options="verticalMenuData"
     accordion
-    :render-label="renderMenuLabel"
-    :render-icon="renderMenuIcon"
+    :expanded-keys="expandedKeys"
+    :render-label="menuStore.renderMenuLabel"
+    :render-icon="menuStore.renderMenuIcon"
     :collapsed="collapsed"
     :collapsed-width="sideBarConfig.collapsedWidth"
-    @update:value="navigateToMenuItem"
+    @update:value="menuStore.navigateToMenuItem"
+    @update:expanded-keys="menuStore.setExpandedKeys"
   />
 </template>
 

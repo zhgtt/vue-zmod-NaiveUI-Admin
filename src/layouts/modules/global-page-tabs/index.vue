@@ -1,14 +1,16 @@
 <script setup lang="tsx">
 /**
- * @description: 页面标签栏功能
- * ? 支持关闭、拖拽、刷新、右侧点击功能（固定、关闭等）
+ * @description: 页面标签栏功能（由路由数据主导）
+ * ? 支持关闭、拖拽、刷新、右侧点击功能（固定、关闭左侧/右侧/其他 等）
  */
 import { useDraggable } from 'vue-draggable-plus'
 
 import type { PageTab } from '@/store'
 import { useLayoutStore, usePageTabsStore } from '@/store'
 
-import { useTabsContext } from './use-tabs-context'
+import { useAppActions } from '@/hooks'
+
+import { useTabsContext } from './hooks/use-tabs-context'
 
 defineOptions({
   name: 'GlobalPageTabs',
@@ -19,6 +21,9 @@ const pageTabsStore = usePageTabsStore()
 
 const { tabsConfig, asyncStyle, headerConfig } = storeToRefs(layoutStore)
 const { tabs, activeTab } = storeToRefs(pageTabsStore)
+
+// 全局的 hooks
+const { reloadPage, toggleMaximize } = useAppActions()
 
 /**
  * @description: 右侧下拉菜单相关
@@ -37,16 +42,16 @@ const {
 /**
  * @description: 拖拽相关
  */
-const pageTabsRef = ref<InstanceType<typeof NTabs> | null>(null)
-
+// NOTE vue3.5 版本之后，组件模板引用可以使用 useTemplateRef，与之前的 ref 区分开，语义更清晰
+const pageTabsEl = useTemplateRef('pageTabsRef')
 // 处理拖拽逻辑
 function initDraggable() {
-  if (!pageTabsRef.value)
+  if (!pageTabsEl.value)
     return
 
   // 获取 n-tabs 组件内部的 tab 父容器 DOM
   // 🔔 这里的选择器是基于 Naive UI 的 DOM 结构，如果 Naive UI 更新可能会失效
-  const el = pageTabsRef.value.$el.querySelector('.n-tabs-wrapper') as HTMLElement
+  const el = pageTabsEl.value.$el.querySelector('.n-tabs-wrapper') as HTMLElement
   if (!el)
     return
 
@@ -86,19 +91,45 @@ function initDraggable() {
 }
 
 onMounted(async () => {
-  // * 等待 DOM 渲染完成
+  // 等待 DOM 渲染完成
   await nextTick()
 
   initDraggable()
 })
+
+// tab 点击事件
 function handleTabClick(tab: PageTab) {
-  // TODO 切换到非当前菜单层的 标签，对应的菜单层没有展开
-  console.log('tab: ', tab)
   pageTabsStore.setActiveTab(tab)
 }
 
+// tab 关闭事件
 function handleClose(key: string) {
   pageTabsStore.closeTab(key)
+}
+
+/**
+ * @description: 渲染右侧操作按钮
+ */
+function SuffixActions() {
+  const actions = [
+    { label: '刷新当前页', icon: 'tabler:refresh', onClick: () => reloadPage() },
+    { label: '内容区全屏', icon: 'tabler:maximize', onClick: () => toggleMaximize() },
+  ]
+
+  return actions.map((action) => {
+    return (
+      <n-tooltip key={action.label} show-arrow={false} placement="bottom-end" trigger="hover">
+        {{
+          trigger: () => (
+            <n-button quaternary circle onClick={action.onClick}>
+              <SvgIcon class="font-size-5" type="iconify" name={action.icon} />
+            </n-button>
+          ),
+          default: () => action.label,
+        }}
+      </n-tooltip>
+    )
+  })
 }
 </script>
 
@@ -130,7 +161,7 @@ function handleClose(key: string) {
           @click="handleTabClick(tab)"
           @contextmenu.prevent="(e: MouseEvent) => handleTabRightClick(e, tab)"
         >
-          <!-- * NOTE flex 布局下，可以多使用 gap 来控制元素之间的间距 -->
+          <!-- NOTE flex 布局下，可以多使用 gap 来控制元素之间的间距 -->
           <div class="flex items-center gap-2">
             <template v-if="tab.icon">
               <SvgIcon v-bind="{ ...tab.icon }" class="font-size-4" />
@@ -142,6 +173,13 @@ function handleClose(key: string) {
             </template>
           </div>
         </n-tab>
+
+        <!-- TODO 优化成tsx 改成循环调用，右侧操作，提供 刷新、内容全屏 功能 -->
+        <template #suffix>
+          <div class="flex items-center gap-2">
+            <SuffixActions />
+          </div>
+        </template>
       </n-tabs>
     </div>
   </div>

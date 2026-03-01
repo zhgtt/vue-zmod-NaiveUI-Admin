@@ -19,17 +19,17 @@ declare namespace APP.Layout {
     // 内容区域宽度（固定宽度或者流式宽度）
     // contentWidth?: 'fixed' | 'fluid'
 
-    // 菜单折叠按钮的位置
+    // 侧边栏折叠按钮的位置
     // menuTogglePosition?: 'header' | 'sidebar'
+
+    // 系统标题
+    sysTitle?: string
   }
 
   // 顶部栏配置
   interface HeaderConfig {
     // 顶部栏高度，默认为 60px
     height: number
-
-    // 顶部栏标题
-    title?: string
 
     // 是否显示面包屑（top、mixedSide 模式下不会显示）
     showBreadcrumb?: boolean
@@ -49,11 +49,8 @@ declare namespace APP.Layout {
     // 是否显示
     show?: boolean
 
-    // 是否固定标签栏
-    // fixed?: boolean
-
     // 标签栏高度
-    height?: number
+    height: number
   }
 
   // 页脚配置

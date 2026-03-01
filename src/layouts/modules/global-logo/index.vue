@@ -10,10 +10,9 @@ defineOptions({
 
 // 获取布局配置
 const layoutStore = useLayoutStore()
-const menuStore = useMenuStore()
+// const menuStore = useMenuStore()
 
-const { headerConfig, sideBarWidth, sideBarConfig } = storeToRefs(layoutStore)
-const { collapsed } = storeToRefs(menuStore)
+const { layoutConfig, headerConfig, sideBarWidth, sideBarConfig, collapsed } = storeToRefs(layoutStore)
 
 // 显示标题的状态
 const showTitle = ref(false)
@@ -24,17 +23,9 @@ const logoWidth = ref(sideBarConfig.value.width)
 watchEffect(() => {
   const isCollapsed = collapsed.value
 
-  // 折叠时
-  if (isCollapsed) {
-    // 改变 logo 宽度
-    logoWidth.value = sideBarWidth.value
-    // 不显示标题
-    showTitle.value = false
-  }
-  else {
-    logoWidth.value = sideBarConfig.value.width
-    showTitle.value = true
-  }
+  // 折叠时 改变 logo 宽度、不显示标题
+  logoWidth.value = sideBarWidth.value
+  showTitle.value = !isCollapsed
 })
 </script>
 
@@ -45,12 +36,12 @@ watchEffect(() => {
     :style="{ width: `${logoWidth}px`, height: `${headerConfig.height}px` }"
   >
     <!-- TODO logo 图标需要自定义，也有可能是一个图片 -->
-    <SvgIcon name="leo" type="icon-park" :style="{ fontSize: '2em' }" />
+    <SvgIcon name="moon" :style="{ fontSize: '2em' }" />
 
     <!-- 只在未折叠时显示标题 -->
     <!-- TODO 动画效果后期改成使用 动画库 -->
     <transition name="fade">
-      <h2 v-if="showTitle" class="pl-2 text-4 font-bold">{{ headerConfig.title }}</h2>
+      <h2 v-if="showTitle" class="pl-2 text-4 font-bold">{{ layoutConfig.sysTitle }}</h2>
     </transition>
   </a>
 </template>

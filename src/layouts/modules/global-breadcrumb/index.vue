@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 /**
- * @description: 全局面包屑组件
+ * @description: 全局面包屑组件（由菜单数据主导）
  */
 import type { DropdownOption } from 'naive-ui'
 
@@ -70,9 +70,9 @@ function handleSelect(_key: string | number, option: DropdownOption) {
 // 渲染面包屑项内容的函数
 function renderBreadcrumbContent(item: APP.Menu.MenuItem) {
   return (
-    <div>
+    <div class="flex items-center gap-2">
       {renderMenuIcon(item)}
-      <span class="ml-1">{item.label}</span>
+      <span>{item.label}</span>
     </div>
   )
 }

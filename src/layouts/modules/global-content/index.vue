@@ -4,6 +4,8 @@
  */
 import { useLayoutStore } from '@/store'
 
+import MaximizeExitButton from './components/maximize-exit-button.vue'
+
 defineOptions({
   name: 'GlobalContent',
 })
@@ -28,6 +30,9 @@ const { asyncStyle } = storeToRefs(layoutStore)
       </div>
     </main>
   </RouterView>
+
+  <!-- 退出最大化按钮 -->
+  <MaximizeExitButton />
 </template>
 
 <style scoped></style>

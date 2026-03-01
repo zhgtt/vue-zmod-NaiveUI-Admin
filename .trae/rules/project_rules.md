@@ -1,4 +1,4 @@
-1. 当前项目使用的框架为 vue3 + vite + pinia + typescript
+1. 当前项目使用的框架为 vue3.5+ + vite7+ + pinia + typescript
 2. 当前项目使用的 UI 库为 naive ui，在使用 UI 组件时都要使用该库，并且要严格查看最新的官方文档
 3. 项目中使用的数据处理插件为 es-tookit，在处理数据时尽量都使用该插件，避免手动去实现各种数据处理方法
 4. 项目中使用的 eslint 插件为 @antfu/eslint-config

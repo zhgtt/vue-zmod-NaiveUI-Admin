@@ -3,19 +3,22 @@
  */
 import type { DropdownOption } from 'naive-ui'
 
-import SvgIcon from '@/components/custom/SvgIcon.vue'
-
 import { findIndex } from 'es-toolkit/compat'
+
+import { useAppActions } from '@/hooks'
 
 import type { PageTab } from '@/store'
 import { usePageTabsStore } from '@/store'
 
-export function useTabsContext() {
-  const router = useRouter()
+import SvgIcon from '@/components/custom/SvgIcon.vue'
 
+export function useTabsContext() {
   const pageTabsStore = usePageTabsStore()
 
   const { tabs, activeTab } = storeToRefs(pageTabsStore)
+
+  // 获取封装好的 hooks
+  const { reloadPage, toggleMaximize, openInNewWindow } = useAppActions()
 
   // 右键菜单相关状态
   const showDropdown = ref(false)
@@ -75,6 +78,8 @@ export function useTabsContext() {
 
       // 固定/取消固定
       createItem(fixed ? '取消固定' : '固定', 'fixed', fixed ? 'tabler:pinned-off' : 'tabler:pinned'),
+      createItem('内容区全屏', 'maximize', 'tabler:window-maximize'),
+      createItem('新窗口打开', 'newWindow', 'tabler:app-window'),
       { type: 'divider', key: 'd2' },
 
       createItem('关闭其他标签页', 'closeOther', 'tabler:arrow-bar-both', disabledMap.closeOther),
@@ -87,14 +92,20 @@ export function useTabsContext() {
    * @description: 2️⃣ 策略模式处理菜单动作
    */
   const actionMap: Record<string, (tab: PageTab, index: number) => void> = {
-    refresh: (tab) => {
-      router.replace({ path: tab.path, query: { ...tab.query, _t: Date.now() } })
-    },
+    refresh: () => reloadPage(),
     close: (tab, index) => pageTabsStore.closeTab(tab.key, index),
     fixed: (tab, index) => pageTabsStore.toggleFixedTab(tab.key, index),
     closeOther: tab => pageTabsStore.closeOtherTabs(tab.key),
     closeLeft: (tab, index) => pageTabsStore.closeLeftTabs(tab.key, index),
     closeRight: (tab, index) => pageTabsStore.closeRightTabs(tab.key, index),
+    maximize: (tab) => {
+      // 如果不是当前标签页，先进行路由跳转
+      if (tab.key !== activeTab.value) {
+        pageTabsStore.setActiveTab(tab)
+      }
+      toggleMaximize()
+    },
+    newWindow: tab => openInNewWindow(tab.path),
   }
 
   /**

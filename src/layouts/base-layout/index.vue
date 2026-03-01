@@ -12,19 +12,21 @@ defineOptions({
 
 const layoutStore = useLayoutStore()
 
-const { sideBarVisible, tabsConfig } = storeToRefs(layoutStore)
+const { sideBarVisible, tabsConfig, isMaximized } = storeToRefs(layoutStore)
 </script>
 
 <template>
   <div class="h-full flex flex-col transition-all-300">
-    <!-- 顶部导航 -->
-    <GlobalHeader />
+    <template v-if="!isMaximized">
+      <!-- 顶部导航 -->
+      <GlobalHeader />
 
-    <!-- 标签栏 -->
-    <GlobalPageTabs v-if="tabsConfig?.show" />
+      <!-- 标签栏 -->
+      <GlobalPageTabs v-if="tabsConfig?.show" />
 
-    <!-- 侧边栏（水平菜单模式，没有侧边栏） -->
-    <GlobalSidebar v-if="sideBarVisible" />
+      <!-- 侧边栏（水平菜单模式，没有侧边栏） -->
+      <GlobalSidebar v-if="sideBarVisible" />
+    </template>
 
     <!-- 主体内容 -->
     <GlobalContent />

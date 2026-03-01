@@ -3,6 +3,7 @@
  */
 import type { MenuOption } from 'naive-ui'
 
+import type { LocationQueryRaw } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
 
 // * watchImmediate - 立即执行的 watch 简写（{immediate: true}）
@@ -14,7 +15,7 @@ import type { IconProps } from '@/components/custom/SvgIcon.vue'
 import { useLayoutStore } from '@/store'
 
 import { convertRoutesToMenus } from './helper'
-import { buildMenuKeyMap, findMenuByKey, findMenuByPath } from '@/utils'
+import { buildMenuKeyMap, findMenuAncestors, findMenuByKey, findMenuByPath } from '@/utils'
 
 export const useMenuStore = defineStore(
   'menu-store',
@@ -22,6 +23,7 @@ export const useMenuStore = defineStore(
     const vueRouter = useRouter()
     const vueRoutes = useRoute()
 
+    // 布局相关 store
     const layoutStore = useLayoutStore()
 
     /**
@@ -40,8 +42,8 @@ export const useMenuStore = defineStore(
     // 用于水平/垂直菜单组件双向绑定的 key
     const menuModelValue = ref<string>()
 
-    // 侧边栏菜单是否折叠
-    const collapsed = ref(false)
+    // 展开的父级菜单 keys
+    const expandedKeys = ref<string[]>([])
 
     /**
      * @description: 计算属性
@@ -98,10 +100,20 @@ export const useMenuStore = defineStore(
           return
         }
 
-        // 更新当前选中菜单项的 key
+        // * 更新当前选中菜单项的 key
         selectedKey.value = currentMenuItem.key
 
-        // 🍄 使用策略模式处理不同布局模式下的逻辑
+        // * 更新展开的父级菜单层 keys，如果侧边栏折叠，则不需要
+        if (!layoutStore.collapsed) {
+          const ancestors = findMenuAncestors(menuData.value, currentMenuItem.key)
+          // 手风琴模式：只展开当前菜单的父级节点，不合并旧的 expandedKeys
+          // 如果当前是根菜单（非嵌套菜单），则不收起其他菜单，保持现状
+          if (ancestors.length > 0) {
+            expandedKeys.value = ancestors
+          }
+        }
+
+        // * 使用策略模式处理不同布局模式下的逻辑
         const layoutHandlers = {
           // 🍄 side 模式下，直接显示侧边栏（因为侧边栏模式是 false） 👇️
           side: () => {
@@ -166,7 +178,7 @@ export const useMenuStore = defineStore(
       try {
         // resetMenuState()
         menuData.value = convertRoutesToMenus([...routes])
-        console.log('menuData.value ==== 😐😐', menuData.value)
+        console.warn('路由转换后的菜单数据 ==== 😐😐', menuData.value)
       }
       catch (error) {
         console.error('初始化静态菜单失败:', error)
@@ -197,29 +209,59 @@ export const useMenuStore = defineStore(
     // Fun3️⃣ 执行路由跳转
     function menuRouterPush(menuItem: APP.Menu.MenuItem) {
       if ('routePath' in menuItem) {
-        vueRouter.push({
-          path: menuItem.routePath,
-          ...(menuItem?.query && { query: menuItem.query }),
-        })
+        // 显式断言 menuItem.query 为 LocationQueryRaw 类型
+        const query = menuItem.query as LocationQueryRaw | undefined
+        vueRouter.push({ path: menuItem.routePath, query })
       }
     }
 
-    // Fun4️⃣ 切换菜单折叠状态
-    function toggleCollapsed() {
-      collapsed.value = !collapsed.value
+    /**
+     * @description: 菜单状态操作函数
+     */
+
+    // 设置展开的父级菜单 keys
+    function setExpandedKeys(keys: string[]) {
+      expandedKeys.value = keys
     }
 
-    // Fun5️⃣ 设置菜单折叠状态
-    function setCollapsed(value: boolean) {
-      collapsed.value = value
-    }
-
-    // Fun6️⃣ 自定义渲染 label（渲染外链）
+    // 自定义渲染 label（渲染外链）
     function renderMenuLabel(item: MenuOption) {
+      const menuItem = item as APP.Menu.MenuItem
+
+      // 1. 如果是外链菜单，直接返回 a 标签
+      if ('href' in menuItem) {
+        return (
+          // NOTE rel="noopener noreferrer" 是 <a> 标签的安全属性组合，用于保护用户隐私和提升安全性
+          // 需阻止事件冒泡，防止触发 n-menu 的选择事件
+          <a href={menuItem.href} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}>
+            {item.label}
+          </a>
+        )
+      }
+
+      // 2. 如果是父级菜单（有子菜单），直接返回 label
+      if (menuItem.children?.length) {
+        return item.label as string
+      }
+
+      // 3. 如果是内部路由，使用 a 标签包裹（为了支持右键新窗口打开），但阻止左键默认跳转
+      if ('routePath' in menuItem) {
+        // 使用 resolve 获取完整 href (包含 query 参数)
+        const query = menuItem.query as LocationQueryRaw | undefined
+        const { href } = vueRouter.resolve({ path: menuItem.routePath, query })
+
+        return (
+          // 需阻止默认跳转，交由 n-menu 的 @update:value 处理
+          <a href={href} onClick={e => e.preventDefault()}>
+            {menuItem.label}
+          </a>
+        )
+      }
+
       return item.label as string
     }
 
-    // Fun7️⃣ 自定义渲染图标
+    // 自定义渲染图标
     function renderMenuIcon(item: MenuOption) {
       // 默认情况下，会渲染图标占位符以保持缩进
       // 若返回 false 值，不再渲染图标及占位符
@@ -266,16 +308,15 @@ export const useMenuStore = defineStore(
       verticalMenuData,
       initStaticMenus,
 
-      navigateToMenuItem,
-      menuRouterPush,
-
       selectedKey,
       menuModelValue,
       selectedRootKey,
 
-      collapsed,
-      toggleCollapsed,
-      setCollapsed,
+      expandedKeys,
+      setExpandedKeys,
+
+      navigateToMenuItem,
+      menuRouterPush,
 
       renderMenuLabel,
       renderMenuIcon,

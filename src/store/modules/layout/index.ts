@@ -15,7 +15,7 @@ export const useLayoutStore = defineStore(
   'layout-store',
   () => {
     // 菜单相关
-    const menuStore = useMenuStore()
+    // const menuStore = useMenuStore()
 
     // 布局容器配置
     const layoutConfig = ref<APP.Layout.LayoutConfig>({ ...defaultLayoutConfig })
@@ -29,12 +29,17 @@ export const useLayoutStore = defineStore(
     const sideBarVisible = ref(false)
     // 侧边栏配置
     const sideBarConfig = ref<APP.Layout.SidebarConfig>({ ...defaultSidebarConfig })
+    // 侧边栏及菜单是否折叠
+    const collapsed = ref(false)
 
     // 底部栏配置
     const footerConfig = ref<APP.Layout.FooterConfig>({ ...defaultFooterConfig })
 
     // 标签栏配置
     const tabsConfig = ref<APP.Layout.TabsConfig>({ ...defaultTabsConfig })
+
+    // 内容区域是否最大化（全屏，隐藏头部和侧边栏）
+    const isMaximized = ref(false)
 
     // 动态更改布局组件的样式
     const asyncStyle = ref({
@@ -47,9 +52,12 @@ export const useLayoutStore = defineStore(
     // 1️⃣ 监听导航模式变化，动态更改样式
     watchEffect(() => {
       const mode = layoutConfig.value.navMode
+      const isMax = isMaximized.value
 
-      const { height: headerHeight } = headerConfig.value
-      const sideWidth = sideBarVisible.value ? sideBarWidth.value : 0
+      // 如果最大化，头部高度为 0
+      const headerHeight = isMax ? 0 : headerConfig.value.height
+      // 如果最大化，侧边栏宽度视为 0
+      const sideWidth = (sideBarVisible.value && !isMax) ? sideBarWidth.value : 0
 
       asyncStyle.value = {
         sideOffsetTop: ['mixedSide'].includes(mode) ? headerHeight : 0,
@@ -61,14 +69,14 @@ export const useLayoutStore = defineStore(
 
     // 2️⃣ 监听菜单折叠变化，动态更改侧边栏的宽度
     watchEffect(() => {
-      // 直接从 menuStore 获取 collapsed 的当前值，而不是使用 storeToRefs
-      const isCollapsed = menuStore.collapsed
-
-      sideBarWidth.value = isCollapsed
+      sideBarWidth.value = collapsed.value
         ? sideBarConfig.value.collapsedWidth
         : sideBarConfig.value.width
     })
 
+    /**
+     * @description: 布局相关的设置
+     */
     // Fun1️⃣ 更新布局容器配置
     function updateLayoutConfig(config: Partial<APP.Layout.LayoutConfig>) {
       layoutConfig.value = { ...layoutConfig.value, ...config }
@@ -95,9 +103,24 @@ export const useLayoutStore = defineStore(
       footerConfig.value = { ...footerConfig.value, ...config }
     }
 
-    // Fun5️⃣ 更新标签栏配置
+    // Fun6️⃣ 更新标签栏配置
     function updateTabsConfig(config: Partial<APP.Layout.FooterConfig>) {
       tabsConfig.value = { ...tabsConfig.value, ...config }
+    }
+
+    // Fun7️⃣ 切换最大化状态
+    function toggleMaximize() {
+      isMaximized.value = !isMaximized.value
+    }
+
+    // 切换菜单折叠状态
+    function toggleCollapsed() {
+      collapsed.value = !collapsed.value
+    }
+
+    // 设置菜单折叠状态
+    function setCollapsed(value: boolean) {
+      collapsed.value = value
     }
 
     return {
@@ -113,11 +136,18 @@ export const useLayoutStore = defineStore(
       setSideBarVisible,
       updateSideBarConfig,
 
+      collapsed,
+      toggleCollapsed,
+      setCollapsed,
+
       footerConfig,
       updateFooterConfig,
 
       tabsConfig,
       updateTabsConfig,
+
+      isMaximized,
+      toggleMaximize,
 
       asyncStyle,
     }

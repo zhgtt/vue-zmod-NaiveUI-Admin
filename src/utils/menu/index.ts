@@ -73,6 +73,8 @@ export function findRootMenuByKey(menus: APP.Menu.MenuItem[], key: string): APP.
 
 /**
  * @description: 5️⃣ 构建菜单键值映射关系，用于快速查找子菜单所属的根菜单的 key（在初始化数据的时候使用）
+ * ? 使用场景：可用于混合菜单布局下，当前子菜单能快速找到其根菜单（顶部一级菜单）的 key，便于高亮根菜单
+ *
  * @param {APP.Menu.MenuItem[]} menus - 菜单数组
  * @param {Record<string, string>} keyMap - 存储映射关系的对象
  * @param {string} parentKey - 父级菜单的key
@@ -102,8 +104,8 @@ export function buildMenuKeyMap(
 }
 
 /**
- * @description: 6️⃣ 根据菜单 key 递归查找从 根菜单到当前菜单 的范围路径
- * ? 可用于获取当前菜单对应的面包屑数据
+ * @description: 6️⃣ 根据菜单 key 递归查找从 根菜单到当前菜单 的范围路径数据
+ * ? 使用场景：可用于获取 当前菜单 对应的 面包屑数据
  *
  * @param {APP.Menu.MenuItem[]} menus - 菜单数组
  * @param {string} key - 菜单的key
@@ -114,6 +116,7 @@ export function findPathToNode(menus: APP.Menu.MenuItem[], key: string): APP.Men
     return null
 
   // 查找目标菜单所属的根菜单
+  // * 这一步是为了缩小查找范围，从根菜单开始递归
   const rootMenu = findRootMenuByKey(menus, key)
   if (!rootMenu)
     return null
@@ -122,20 +125,23 @@ export function findPathToNode(menus: APP.Menu.MenuItem[], key: string): APP.Men
   if (rootMenu.key === key)
     return [rootMenu]
 
-  // 递归查找路径的辅助函数
+  // 🍄 递归查找路径的辅助函数
   const findPath = (
-    menu: APP.Menu.MenuItem,
+    currentMenu: APP.Menu.MenuItem,
     targetKey: string,
-    path: APP.Menu.MenuItem[] = [],
+    currentPath: APP.Menu.MenuItem[] = [],
   ): APP.Menu.MenuItem[] | null => {
-    path.push(menu)
+    // 将当前节点加入路径
+    const newPath = [...currentPath, currentMenu]
 
-    if (menu.key === targetKey)
-      return path
+    // 找到目标节点
+    if (currentMenu.key === targetKey) {
+      return newPath
+    }
 
-    if (menu.children?.length) {
-      for (const child of menu.children) {
-        const result = findPath(child, targetKey, [...path])
+    if (currentMenu.children?.length) {
+      for (const child of currentMenu.children) {
+        const result = findPath(child, targetKey, newPath)
         if (result)
           return result
       }
@@ -146,4 +152,23 @@ export function findPathToNode(menus: APP.Menu.MenuItem[], key: string): APP.Men
   }
 
   return findPath(rootMenu, key)
+}
+
+/**
+ * @description: 7️⃣ 根据菜单 key 递归查找从 根菜单到当前菜单 的范围路径的 key
+ * ? 使用场景：可用于在菜单中 展开 对应的父级菜单层级
+ *
+ * @param {APP.Menu.MenuItem[]} menus - 菜单数组
+ * @param {string} key - 目标菜单 key
+ * @returns {string[]} 父级菜单 key 数组（从顶层到最近一级）
+ */
+export function findMenuAncestors(menus: APP.Menu.MenuItem[], key: string): string[] {
+  // 复用 findPathToNode 获取完整路径对象
+  const pathNodes = findPathToNode(menus, key)
+
+  if (!pathNodes || pathNodes.length === 0)
+    return []
+
+  // 提取 key，并移除最后一个（即当前菜单自身），只保留所有父级
+  return pathNodes.slice(0, -1).map(item => item.key)
 }

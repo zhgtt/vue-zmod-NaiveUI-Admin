@@ -49,9 +49,6 @@ declare global {
         // ! 如果想让该文件展示为嵌套（父级）菜单，则将其设置为 false
         isChildMenu?: boolean
 
-        // 对应路由的参数，如果设置的话，点击菜单进入该路由，会自动携带该参数
-        query?: Record<string, string>
-
         // 对应菜单的外链地址（仅在自定义菜单时生效，在 .vue 文件中定义无效）
         href?: string
 
@@ -65,7 +62,7 @@ declare global {
       // 🍄 完整的菜单项类型（兼容 naive-ui 的菜单类型）
       type MenuItem = BaseItem & ItemConfig & MenuOption
 
-      // TODO 菜单配置
+      // TODO 菜单配置可以继续拓展
       interface Config {
         // 是否开启手风琴模式（同时只能展开一个菜单）
         accordion?: boolean

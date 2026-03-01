@@ -1,6 +1,10 @@
 /**
- * @description: 辅助工具函数
- * 处理菜单相关的逻辑、将路由数据转换成对应的菜单数据
+ * @description: 处理/转换菜单数据
+ * 1. 将文件路由数据转换成对应的菜单数据
+ * 2. 目录文件下的 index.vue 文件可以是配置文件也可以是页面文件，当为配置文件时，这个目录下的文件都被会转换成嵌套菜单
+ * 3. 如果创建的是 [任意名].vue 文件，则会被认定为页面文件，会直接转换成菜单
+ * 2. TODO 处理动态菜单数据的转换
+ * 3. TODO 处理菜单数据的动态徽章
  */
 import type { RouteRecordRaw } from 'vue-router'
 
@@ -27,6 +31,7 @@ function createBaseMenuItem(route: RouteRecordRaw): APP.Menu.MenuItem {
     label: customLabel || meta?.title || name as string,
     // ...(isChildMenu && { routePath: meta?.fullPath }), // 🍄 所在目录为 菜单项，才有 routePath 属性
     routePath: meta?.fullPath, // 不区分是否为 菜单项，都有 routePath 属性（为了兼容面包屑的路由跳转）
+    query: meta?.query || {}, // 提取 meta 中的 query
     ...restMenuProps,
   }
 }
@@ -58,7 +63,6 @@ function isDynamicRoute(route: RouteRecordRaw) {
 export function convertRoutesToMenus(routes: RouteRecordRaw[]) {
   // 🍄 过滤掉内置路由，这些路由无需参与菜单转换
   const validRoutes = routes.filter(route => !builtinRoutePaths.includes(route.path)) // js 写法
-  console.log('🍄 过滤掉内置路由', validRoutes)
 
   // 🍄 深度 clone 一下，别影响原 route 数据
   const clonedRoutes = cloneDeep(validRoutes)

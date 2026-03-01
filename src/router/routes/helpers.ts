@@ -10,7 +10,6 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import { rootRoute } from '@/constants/routes'
 import { pageLayouts } from '@/constants/layout'
-import { log } from 'node:console'
 
 interface RouteTransformResult {
   baseRoutes: RouteRecordRaw[]
@@ -18,6 +17,22 @@ interface RouteTransformResult {
 }
 
 const { VITE_LAYOUT_COMPONENT = 'base' } = import.meta.env
+
+/**
+ * @description: 创建空白布局路由基础数据信息 👇
+ */
+function createBlankRoute(route: RouteRecordRaw) {
+  const { name, path, component, meta } = route
+
+  const routeItem: RouteRecordRaw = {
+    path: path || meta?.fullPath as string,
+    component: pageLayouts.blank,
+    children: [
+      { name, path: '', component, meta } as RouteRecordRaw,
+    ],
+  }
+  return routeItem
+}
 
 /**
  * @description: 1️⃣ 创建根路由，指定其布局容器 为 base，完善其 children 的数据 👇
@@ -29,6 +44,8 @@ function createRootRoute(children: RouteRecordRaw[]) {
 /**
  * @description: 2️⃣ 批量处理路由 👇
  * @param routes - 路由源数据
+ *
+ * ? 文件生成的路由，目录也会成为一条单独的数据
  */
 export function transformRoutes(routes: RouteRecordRaw[]) {
   const component = pageLayouts[VITE_LAYOUT_COMPONENT]
@@ -77,18 +94,4 @@ function isBlankLayout(route: RouteRecordRaw): boolean {
   // 确保 meta.blank 为布尔值，如果是 undefined 则返回 false
   return Boolean(meta?.blank)
   // && blankLayoutRoutes.findIndex((item: RouteRecordRaw) => item.name === name) === -1
-}
-
-// 拆分：创建空白布局路由数据信息 👇
-function createBlankRoute(route: RouteRecordRaw) {
-  const { name, path, component, meta } = route
-
-  const routeItem: RouteRecordRaw = {
-    path: path || meta?.fullPath as string,
-    component: pageLayouts.blank,
-    children: [
-      { name, path: '', component, meta } as RouteRecordRaw,
-    ],
-  }
-  return routeItem
 }

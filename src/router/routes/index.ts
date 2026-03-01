@@ -14,7 +14,7 @@ import { pageLayouts } from '@/constants/layout'
 
 const { VITE_LAYOUT_COMPONENT = 'base' } = import.meta.env
 
-console.log('路由源数据:', routes)
+console.warn('路由源数据:', routes)
 /**
  * @description: 创建空白布局的根路由，指定其布局容器 为 blank，完善其 children 的数据 👇
  */
@@ -35,7 +35,7 @@ export function createVueRoutes() {
     // 🍄 如果 VITE_LAYOUT_COMPONENT 为 base，则需要对自动生成的 routes 数据进行转换
     // 1. 先转换自动生成的 routes 数据，生成 基础布局路由 baseRoutes 和 空白布局路由 blankRoutes
     const { baseRoutes, blankLayoutRoutes } = transformRoutes([...routes])
-    console.log('转换后的路由数据:', baseRoutes, blankLayoutRoutes)
+    console.warn('转换后的路由数据:', baseRoutes, blankLayoutRoutes)
 
     // 2. 将二者进行合并，传递给 vue-router
     return [...baseRoutes, ...blankLayoutRoutes]

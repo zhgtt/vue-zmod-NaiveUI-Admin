@@ -1,10 +1,12 @@
 /**
  * @description: 创建标签页的全局状态管理
  */
-import type { RouteLocationNormalized } from 'vue-router'
+import type { LocationQueryRaw, RouteLocationNormalized } from 'vue-router'
 
 import { filter, find, findIndex, findLastIndex, partition } from 'es-toolkit/compat'
+import { cloneDeep } from 'es-toolkit/object'
 
+// tab 的数据由对应的 路由 数据转换而成
 export interface PageTab {
   /** 标签页唯一标识，使用路由数据的 name 属性 */
   key: string
@@ -12,8 +14,8 @@ export interface PageTab {
   title: string
   /** 路由路径 */
   path: string
-  /** 查询参数 */
-  query?: Record<string, any>
+  /** 查询参数，采用的是路由的 query 参数，类型与 meta.query 一致 */
+  query?: LocationQueryRaw
   /** 是否固定（不可关闭） */
   fixed?: boolean
   /** 图标配置 */
@@ -45,6 +47,7 @@ export const usePageTabsStore = defineStore(
     // Fun1️⃣ 添加标签页
     function addTab(route: RouteLocationNormalized) {
       const { name, fullPath, meta, query } = route
+
       const key = String(name || fullPath)
 
       // 如果已存在，则将当前标签页设置为激活状态
@@ -61,7 +64,7 @@ export const usePageTabsStore = defineStore(
         title: meta?.title || customLabel || '未命名',
         icon: iconConfig,
         fixed: false,
-        // query: cloneDeep(query),
+        query: cloneDeep(query),
       }
 
       // 插入逻辑：始终保持固定的标签排序在前面
@@ -71,7 +74,7 @@ export const usePageTabsStore = defineStore(
       const currentIndex = activeTabIndex.value
       const isFixed = tabs.value[currentIndex]?.fixed
 
-      // 判断固定标签页
+      // 判断固定标签页，找最后一个固定标签的索引
       const targetIndex = isFixed
         ? findLastIndex(tabs.value, t => !!t.fixed)
         : currentIndex
@@ -134,10 +137,7 @@ export const usePageTabsStore = defineStore(
 
     // 标签页切换 - 路由跳转
     function setActiveTab(tab: PageTab) {
-      vueRouter.push({
-        path: tab.path,
-        query: tab.query,
-      })
+      vueRouter.push({ path: tab.path, query: tab.query })
     }
 
     /**

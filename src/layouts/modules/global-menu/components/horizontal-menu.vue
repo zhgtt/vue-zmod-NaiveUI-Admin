@@ -1,4 +1,4 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 /**
  * 菜单渲染组件 - 水平菜单
  */

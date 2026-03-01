@@ -10,7 +10,6 @@ export const customMenuItems: APP.Menu.MenuItem[] = [
     href: 'https://github.com',
     parentKey: 'sysFunc',
     order: 3,
-    disabled: true,
     iconConfig: { name: 'mac-finder', type: 'iconify' },
   },
   {

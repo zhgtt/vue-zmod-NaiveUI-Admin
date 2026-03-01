@@ -4,18 +4,15 @@
  */
 import { GlobalActions, GlobalBreadcrumb, GlobalLogo, GlobalMenu } from '@/layouts/modules'
 
-import { useLayoutStore, useMenuStore } from '@/store'
+import { useLayoutStore } from '@/store'
 
 defineOptions({
   name: 'GlobalHeader',
 })
 
 const layoutStore = useLayoutStore()
-const menuStore = useMenuStore()
 
 const { layoutConfig, headerConfig, asyncStyle } = storeToRefs(layoutStore)
-
-const { toggleCollapsed } = menuStore
 
 const navMode = layoutConfig.value.navMode
 
@@ -46,7 +43,7 @@ const showBreadcrumbInHeader = computed(() => {
       <div class="header-container h-full flex-y-center flex-1-hidden px-3">
         <!-- TODO 菜单折叠按钮，后期要将其放至侧边栏的底部 -->
         <template v-if="layoutConfig.navMode !== 'top'">
-          <n-button @click="toggleCollapsed">
+          <n-button @click="layoutStore.toggleCollapsed">
             <SvgIcon name="gravity-ui:bars-play" type="iconify" />
           </n-button>
         </template>

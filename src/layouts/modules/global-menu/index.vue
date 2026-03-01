@@ -1,4 +1,4 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 /**
  * @description: TODO 菜单渲染组件
  * ? 还需支持动态图标、动态菜单、动态徽章
@@ -22,9 +22,7 @@ defineOptions({
 })
 
 // 定义组件接收的属性
-const props = withDefaults(defineProps<Props>(), {
-  mode: 'vertical',
-})
+const { mode = 'vertical' } = defineProps<Props>()
 
 const layoutStore = useLayoutStore()
 
@@ -34,7 +32,7 @@ const { layoutConfig } = storeToRefs(layoutStore)
 const activeMenu = computed(() => {
   const navMode = layoutConfig.value.navMode
 
-  if (props.mode === 'horizontal') {
+  if (mode === 'horizontal') {
     if (['mixedSide'].includes(navMode))
       return RootLevelMenu // 只有一级菜单
 

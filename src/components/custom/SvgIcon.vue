@@ -17,9 +17,13 @@ defineOptions({
   inheritAttrs: false, // 不继承父组件的任何属性
 })
 
-const props = withDefaults(defineProps<IconProps>(), {
-  type: 'local',
-})
+// vue 3.5 版本前的 defineProps 语法
+// const props = withDefaults(defineProps<IconProps>(), {
+//   type: 'local',
+// })
+
+// NOTE vue3.5 版本后支持 props 对象解构，可以不再需要 withDefaults 进行包装了
+const { type = 'local', name } = defineProps<IconProps>()
 
 // 获取组件的内置属性
 const attrs = useAttrs()
@@ -34,7 +38,7 @@ const bindAttrs = computed<{ class: string, style: CSSProperties }>(() => {
 const symbolId = computed(() => {
   const { VITE_ICON_LOCAL_PREFIX: prefix } = import.meta.env // 前缀名称，可在 env 中自定义
 
-  const iconName = props.name || 'no-icon'
+  const iconName = name || 'no-icon'
 
   return `#${prefix}-${iconName}`
 })
