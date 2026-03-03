@@ -11,8 +11,11 @@ import type { RouteRecordRaw } from 'vue-router'
 import { cloneDeep, pickBy } from 'es-toolkit/object'
 import { orderBy } from 'es-toolkit/array'
 
-import { builtinRoutePaths } from '@/constants/routes'
-import { customMenuItems } from '@/constants/menus'
+import { BUILTIN_ROUTE_PATHS } from '@/constants/routes'
+import { CUSTOM_MENU_ITEMS } from '@/constants/menus'
+// import { MENU_FIELD_MAPPING } from '@/constants/map-fields'
+
+// import type { DynamicMenu } from '@/api/menu'
 
 /**
  * @description: 创建基础菜单数据
@@ -62,7 +65,7 @@ function isDynamicRoute(route: RouteRecordRaw) {
  */
 export function convertRoutesToMenus(routes: RouteRecordRaw[]) {
   // 🍄 过滤掉内置路由，这些路由无需参与菜单转换
-  const validRoutes = routes.filter(route => !builtinRoutePaths.includes(route.path)) // js 写法
+  const validRoutes = routes.filter(route => !BUILTIN_ROUTE_PATHS.includes(route.path)) // js 写法
 
   // 🍄 深度 clone 一下，别影响原 route 数据
   const clonedRoutes = cloneDeep(validRoutes)
@@ -217,7 +220,7 @@ function mergeCustomMenus(menus: APP.Menu.MenuItem[]) {
   }
 
   // 处理所有自定义菜单项
-  customMenuItems.forEach(item => addMenuItem(result, item, 1))
+  CUSTOM_MENU_ITEMS.forEach(item => addMenuItem(result, item, 1))
 
   return sortMenuItems(result)
 }

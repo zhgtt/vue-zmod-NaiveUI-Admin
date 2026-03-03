@@ -9,8 +9,8 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import { transformRoutes } from './helpers'
 
-import { rootRoute } from '@/constants/routes'
-import { pageLayouts } from '@/constants/layout'
+import { ROOT_ROUTE } from '@/constants/routes'
+import { PAGE_LAYOUTS } from '@/constants/layout'
 
 const { VITE_LAYOUT_COMPONENT = 'base' } = import.meta.env
 
@@ -19,7 +19,7 @@ console.warn('路由源数据:', routes)
  * @description: 创建空白布局的根路由，指定其布局容器 为 blank，完善其 children 的数据 👇
  */
 function createBlankRootRoute(children: RouteRecordRaw[]) {
-  return { ...rootRoute, component: pageLayouts.blank, children }
+  return { ...ROOT_ROUTE, component: PAGE_LAYOUTS.blank, children }
 }
 
 /**

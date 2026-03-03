@@ -1,6 +1,7 @@
 <script setup lang="tsx">
 /**
  * @description: 全局面包屑组件（由菜单数据主导）
+ * TODO 增加快捷导航的面板功能
  */
 import type { DropdownOption } from 'naive-ui'
 
@@ -42,7 +43,7 @@ function getDropdownOptions(item: APP.Menu.MenuItem): DropdownOption[] {
     label: child.label as string,
     key: child.key,
     disabled: child?.disabled || child.key === selectedKey.value, // 当前菜单需要禁用
-    icon: () => renderMenuIcon(child),
+    // icon: () => renderMenuIcon(child),
     // 存储原始菜单项数据
     menuItem: child,
   }))
@@ -71,7 +72,7 @@ function handleSelect(_key: string | number, option: DropdownOption) {
 function renderBreadcrumbContent(item: APP.Menu.MenuItem) {
   return (
     <div class="flex items-center gap-2">
-      {renderMenuIcon(item)}
+      {/* {renderMenuIcon(item)} */}
       <span>{item.label}</span>
     </div>
   )

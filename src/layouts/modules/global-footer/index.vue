@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /**
  * @description: 底部展示区域
+ * TODO 后续做成跟随内容滚动，也可以支持固定
  */
 import { useLayoutStore } from '@/store'
 

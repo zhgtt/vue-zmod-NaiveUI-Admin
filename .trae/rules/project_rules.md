@@ -10,3 +10,11 @@
 10. 在完善或实现项目中代码时，请严格按照上述的插件使用规则进行开发
 11. 代码要高级简洁不罗嗦，在实现功能时要考虑到代码的可读性和可维护性，不搞冗余的 if、for 循环，一定要高级优雅
 12. 要求代码 简洁高级优雅不冗余
+13. 参考网站链接如下：
+    https://www.vben.pro/#/analytics
+    https://naive-ui-admin.vercel.app/about/index
+    https://admin.slashspaces.com/workbench
+    https://vuejs-core.cn/shop-vite/?from=website#/index
+    https://www.artd.pro/#/change/log
+    https://fantastic-admin.hurui.me/pro-example/#/menu_badge_example/text
+    https://naive.soybeanjs.cn/pro-naive/form/step

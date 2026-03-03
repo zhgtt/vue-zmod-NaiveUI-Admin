@@ -4,11 +4,11 @@
 import { useMenuStore } from '@/store'
 
 import {
-  defaultFooterConfig,
-  defaultHeaderConfig,
-  defaultLayoutConfig,
-  defaultSidebarConfig,
-  defaultTabsConfig,
+  DEFAULT_FOOTER_CONFIG,
+  DEFAULT_HEADER_CONFIG,
+  DEFAULT_LAYOUT_CONFIG,
+  DEFAULT_SIDEBAR_CONFIG,
+  DEFAULT_TABS_CONFIG,
 } from '@/constants/layout'
 
 export const useLayoutStore = defineStore(
@@ -18,25 +18,25 @@ export const useLayoutStore = defineStore(
     // const menuStore = useMenuStore()
 
     // 布局容器配置
-    const layoutConfig = ref<APP.Layout.LayoutConfig>({ ...defaultLayoutConfig })
+    const layoutConfig = ref<APP.Layout.LayoutConfig>({ ...DEFAULT_LAYOUT_CONFIG })
 
     // 顶部栏配置
-    const headerConfig = ref<APP.Layout.HeaderConfig>({ ...defaultHeaderConfig })
+    const headerConfig = ref<APP.Layout.HeaderConfig>({ ...DEFAULT_HEADER_CONFIG })
 
     // 侧边栏宽度
-    const sideBarWidth = ref(defaultSidebarConfig.width)
+    const sideBarWidth = ref(DEFAULT_SIDEBAR_CONFIG.width)
     // 侧边栏可见性
     const sideBarVisible = ref(false)
     // 侧边栏配置
-    const sideBarConfig = ref<APP.Layout.SidebarConfig>({ ...defaultSidebarConfig })
+    const sideBarConfig = ref<APP.Layout.SidebarConfig>({ ...DEFAULT_SIDEBAR_CONFIG })
     // 侧边栏及菜单是否折叠
     const collapsed = ref(false)
 
     // 底部栏配置
-    const footerConfig = ref<APP.Layout.FooterConfig>({ ...defaultFooterConfig })
+    const footerConfig = ref<APP.Layout.FooterConfig>({ ...DEFAULT_FOOTER_CONFIG })
 
     // 标签栏配置
-    const tabsConfig = ref<APP.Layout.TabsConfig>({ ...defaultTabsConfig })
+    const tabsConfig = ref<APP.Layout.TabsConfig>({ ...DEFAULT_TABS_CONFIG })
 
     // 内容区域是否最大化（全屏，隐藏头部和侧边栏）
     const isMaximized = ref(false)
@@ -45,7 +45,7 @@ export const useLayoutStore = defineStore(
     const asyncStyle = ref({
       sideOffsetTop: 0, // 侧边栏距离窗口顶部的距离（用于 siderBar 组件）
       headerOffsetLeft: 0, // 距离窗口左侧的距离（用于 header 组件）
-      contentOffsetLeft: 0, // 距离窗口左侧的距离（用于 content、footer 组件）
+      contentOffsetLeft: 0, // 距离窗口左侧的距离（用于 content、pageTabs、footer 组件）
       sideBarZIndex: 99, // 侧边栏的 z-index 值（用于 siderBar 组件）
     })
 

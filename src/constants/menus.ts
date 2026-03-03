@@ -3,7 +3,7 @@
  */
 
 /** 1️⃣ 自定义菜单项（所有的属性都自行配置，用来定义一些不需要页面的菜单，如 外链） */
-export const customMenuItems: APP.Menu.MenuItem[] = [
+export const CUSTOM_MENU_ITEMS: APP.Menu.MenuItem[] = [
   {
     key: 'github',
     label: 'GitHub 仓库（外链）',

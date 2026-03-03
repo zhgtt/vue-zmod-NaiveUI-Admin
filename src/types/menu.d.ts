@@ -57,6 +57,33 @@ declare global {
 
         // 菜单权限标识
         // permission?: string
+
+        // 菜单徽标配置 (用于静态配置)
+        badge?: MenuBadge
+      }
+
+      // 菜单徽标配置
+      interface MenuBadge {
+        // 是否显示徽标
+        show?: boolean
+
+        // 徽标类型：'dot' | 'tag' | 'icon'
+        type?: 'dot' | 'tag' | 'icon'
+
+        // 徽标内容（适用于 tag）
+        value?: string | number
+
+        // 自定义颜色（适用于 dot 和 tag 类型）
+        color?: import('naive-ui').TagProps.color | string
+
+        // 自定义类名
+        class?: string
+
+        // 徽标图标（适用于 icon 类型）
+        iconConfig?: import('@/components/custom/SvgIcon.vue').IconProps
+
+        // n-tag 组件的属性（适用于 tag 类型）
+        tagProps?: Pick<import('naive-ui').TagProps, 'bordered' | 'round' | 'type'>
       }
 
       // 🍄 完整的菜单项类型（兼容 naive-ui 的菜单类型）

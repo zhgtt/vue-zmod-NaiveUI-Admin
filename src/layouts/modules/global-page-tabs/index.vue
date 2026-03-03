@@ -2,6 +2,7 @@
 /**
  * @description: 页面标签栏功能（由路由数据主导）
  * ? 支持关闭、拖拽、刷新、右侧点击功能（固定、关闭左侧/右侧/其他 等）
+ * TODO 后续最大化时，要将标签栏也可以显示
  */
 import { useDraggable } from 'vue-draggable-plus'
 
@@ -137,51 +138,53 @@ function SuffixActions() {
   <div
     class="shrink-0 w-full transition-all-300 absolute left-0 z-97"
     :style="{
-      // height: `${tabsConfig.height}px`,
-      paddingLeft: `${asyncStyle.headerOffsetLeft}px`,
+      height: `${tabsConfig.height}px`,
+      paddingLeft: `${asyncStyle.contentOffsetLeft}px`,
       top: `${headerConfig.height}px`,
     }"
   >
-    <div class="p-x-4 pt-2">
-      <n-tabs
-        ref="pageTabsRef"
-        v-model:value="activeTab"
-        type="card"
-        @close="handleClose"
+    <!-- <div class="p-x-4"> -->
+    <!-- TODO 可以更换背景色 bg-#F5F8FA -->
+    <n-tabs
+      ref="pageTabsRef"
+      v-model:value="activeTab"
+      class="p-x-3 pt-2"
+      type="card"
+      @close="handleClose"
+    >
+      <n-tab
+        v-for="tab in tabs"
+        :key="tab.key"
+        :class="{ 'drag-handle': !tab.fixed }"
+        :style="{
+          height: `${tabsConfig.height - 8}px`,
+        }"
+        :name="tab.key"
+        :closable="!tab.fixed && tabs.length > 1"
+        @click="handleTabClick(tab)"
+        @contextmenu.prevent="(e: MouseEvent) => handleTabRightClick(e, tab)"
       >
-        <n-tab
-          v-for="tab in tabs"
-          :key="tab.key"
-          :name="tab.key"
-          :closable="!tab.fixed && tabs.length > 1"
-          :class="{ 'drag-handle': !tab.fixed }"
-          :style="{
-            height: `${tabsConfig.height}px`,
-          }"
-          @click="handleTabClick(tab)"
-          @contextmenu.prevent="(e: MouseEvent) => handleTabRightClick(e, tab)"
-        >
-          <!-- NOTE flex 布局下，可以多使用 gap 来控制元素之间的间距 -->
-          <div class="flex items-center gap-2">
-            <template v-if="tab.icon">
-              <SvgIcon v-bind="{ ...tab.icon }" class="font-size-4" />
-            </template>
-            <span>{{ tab.title }}</span>
-            <!-- 固定的标签，要单独显示个图标 -->
-            <template v-if="tab.fixed">
-              <SvgIcon type="iconify" name="tabler:pinned-filled" class="font-size-4" />
-            </template>
-          </div>
-        </n-tab>
+        <!-- NOTE flex 布局下，可以多使用 gap 来控制元素之间的间距 -->
+        <div class="flex items-center gap-2">
+          <template v-if="tab.icon">
+            <SvgIcon v-bind="{ ...tab.icon }" class="font-size-4" />
+          </template>
+          <span>{{ tab.title }}</span>
+          <!-- 固定的标签，要单独显示个图标 -->
+          <template v-if="tab.fixed">
+            <SvgIcon type="iconify" name="tabler:pinned-filled" class="font-size-4" />
+          </template>
+        </div>
+      </n-tab>
 
-        <!-- TODO 优化成tsx 改成循环调用，右侧操作，提供 刷新、内容全屏 功能 -->
-        <template #suffix>
-          <div class="flex items-center gap-2">
-            <SuffixActions />
-          </div>
-        </template>
-      </n-tabs>
-    </div>
+      <!-- TODO 优化成tsx 改成循环调用，右侧操作，提供 刷新、内容全屏 功能 -->
+      <template #suffix>
+        <div class="flex items-center gap-2">
+          <SuffixActions />
+        </div>
+      </template>
+    </n-tabs>
+    <!-- </div> -->
   </div>
 
   <!-- * 再加一个高度一样的 div ，用于占位，避免标签栏被顶掉 -->

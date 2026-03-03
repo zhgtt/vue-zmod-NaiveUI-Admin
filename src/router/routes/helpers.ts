@@ -8,8 +8,8 @@
 import type { RouteRecordRaw } from 'vue-router'
 // // import type { DefinePage } from 'unplugin-vue-router/runtime'
 
-import { rootRoute } from '@/constants/routes'
-import { pageLayouts } from '@/constants/layout'
+import { ROOT_ROUTE } from '@/constants/routes'
+import { PAGE_LAYOUTS } from '@/constants/layout'
 
 interface RouteTransformResult {
   baseRoutes: RouteRecordRaw[]
@@ -26,7 +26,7 @@ function createBlankRoute(route: RouteRecordRaw) {
 
   const routeItem: RouteRecordRaw = {
     path: path || meta?.fullPath as string,
-    component: pageLayouts.blank,
+    component: PAGE_LAYOUTS.blank,
     children: [
       { name, path: '', component, meta } as RouteRecordRaw,
     ],
@@ -38,7 +38,7 @@ function createBlankRoute(route: RouteRecordRaw) {
  * @description: 1️⃣ 创建根路由，指定其布局容器 为 base，完善其 children 的数据 👇
  */
 function createRootRoute(children: RouteRecordRaw[]) {
-  return { ...rootRoute, component: pageLayouts.base, children }
+  return { ...ROOT_ROUTE, component: PAGE_LAYOUTS.base, children }
 }
 
 /**
@@ -48,7 +48,7 @@ function createRootRoute(children: RouteRecordRaw[]) {
  * ? 文件生成的路由，目录也会成为一条单独的数据
  */
 export function transformRoutes(routes: RouteRecordRaw[]) {
-  const component = pageLayouts[VITE_LAYOUT_COMPONENT]
+  const component = PAGE_LAYOUTS[VITE_LAYOUT_COMPONENT]
 
   if (!component)
     throw new Error('请设置正确的布局容器!')

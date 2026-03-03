@@ -3,6 +3,8 @@
  */
 import type { MenuOption } from 'naive-ui'
 
+import { NTag } from 'naive-ui'
+
 import type { LocationQueryRaw } from 'vue-router'
 import { routes } from 'vue-router/auto-routes'
 
@@ -11,6 +13,7 @@ import { watchImmediate } from '@vueuse/core'
 
 import SvgIcon from '@/components/custom/SvgIcon.vue'
 import type { IconProps } from '@/components/custom/SvgIcon.vue'
+import MenuBadge from '@/layouts/modules/global-menu/components/menu-badge.vue'
 
 import { useLayoutStore } from '@/store'
 
@@ -44,6 +47,9 @@ export const useMenuStore = defineStore(
 
     // 展开的父级菜单 keys
     const expandedKeys = ref<string[]>([])
+
+    // 菜单徽标数据
+    const menuBadges = ref<Record<string, APP.Menu.MenuBadge>>({})
 
     /**
      * @description: 计算属性
@@ -215,18 +221,32 @@ export const useMenuStore = defineStore(
       }
     }
 
-    /**
-     * @description: 菜单状态操作函数
-     */
-
-    // 设置展开的父级菜单 keys
+    // Fun4️⃣ 设置展开的父级菜单 keys
     function setExpandedKeys(keys: string[]) {
       expandedKeys.value = keys
     }
 
+    // Fun5️⃣ 重置一些菜单状态
+    function resetMenuState() {
+      selectedRootKey.value = null
+    }
+
+    /**
+     * @description: 菜单及一些额外的渲染函数
+     */
     // 自定义渲染 label（渲染外链）
     function renderMenuLabel(item: MenuOption) {
       const menuItem = item as APP.Menu.MenuItem
+      const badge = menuItem.badge || menuBadges.value[menuItem.key]
+
+      // 渲染 Label 内容 (包含徽标)
+      const renderLabelContent = () => (
+        // 徽标默认是显示的，只有设置 badge.show 为 false，才不显示
+        <div class="flex-y-center justify-between flex-1 w-full overflow-hidden gap-2 pr-1">
+          <span class="truncate">{menuItem.label}</span>
+          {badge && badge.show !== false && <MenuBadge options={badge} />}
+        </div>
+      )
 
       // 1. 如果是外链菜单，直接返回 a 标签
       if ('href' in menuItem) {
@@ -234,14 +254,14 @@ export const useMenuStore = defineStore(
           // NOTE rel="noopener noreferrer" 是 <a> 标签的安全属性组合，用于保护用户隐私和提升安全性
           // 需阻止事件冒泡，防止触发 n-menu 的选择事件
           <a href={menuItem.href} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}>
-            {item.label}
+            {renderLabelContent()}
           </a>
         )
       }
 
       // 2. 如果是父级菜单（有子菜单），直接返回 label
       if (menuItem.children?.length) {
-        return item.label as string
+        return renderLabelContent()
       }
 
       // 3. 如果是内部路由，使用 a 标签包裹（为了支持右键新窗口打开），但阻止左键默认跳转
@@ -253,7 +273,7 @@ export const useMenuStore = defineStore(
         return (
           // 需阻止默认跳转，交由 n-menu 的 @update:value 处理
           <a href={href} onClick={e => e.preventDefault()}>
-            {menuItem.label}
+            {renderLabelContent()}
           </a>
         )
       }
@@ -261,7 +281,7 @@ export const useMenuStore = defineStore(
       return item.label as string
     }
 
-    // 自定义渲染图标
+    // 渲染图标
     function renderMenuIcon(item: MenuOption) {
       // 默认情况下，会渲染图标占位符以保持缩进
       // 若返回 false 值，不再渲染图标及占位符
@@ -271,9 +291,20 @@ export const useMenuStore = defineStore(
       return <SvgIcon {...(item.iconConfig as IconProps)} />
     }
 
-    // Fun8️⃣ 重置一些菜单状态
-    function resetMenuState() {
-      selectedRootKey.value = null
+    // 设置菜单徽标
+    function setMenuBadge(key: string, badge: APP.Menu.MenuBadge) {
+      // 校验 key 是否存在
+      const menu = findMenuByKey(menuData.value, key)
+      if (!menu) {
+        console.error(`[setMenuBadge] 未找到 key 为 "${key}" 的菜单项`)
+        return
+      }
+      menuBadges.value[key] = badge
+    }
+
+    // 移除菜单徽标
+    function removeMenuBadge(key: string) {
+      delete menuBadges.value[key]
     }
 
     // TODO 搜索菜单项
@@ -320,6 +351,10 @@ export const useMenuStore = defineStore(
 
       renderMenuLabel,
       renderMenuIcon,
+
+      menuBadges,
+      setMenuBadge,
+      removeMenuBadge,
     }
   },
   /**
