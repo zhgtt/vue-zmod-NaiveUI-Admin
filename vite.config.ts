@@ -4,6 +4,7 @@ import { defineConfig, loadEnv } from 'vite'
 
 // 引入自定义的模块
 import { setupVitePlugins } from './vite-config/plugins'
+import { createViteProxy } from './vite-config/proxy'
 
 /**
  * @description: vite 相关配置
@@ -42,7 +43,8 @@ export default defineConfig(({ mode, command }) => {
     // vite 本地服务
     server: {
       port: 3003,
-      // hmr: true,
+      host: true, // 允许局域网访问
+      proxy: createViteProxy(mode),
     },
   }
 })

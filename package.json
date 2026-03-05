@@ -12,6 +12,7 @@
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
+    "@alova/mock": "^2.0.19",
     "@iconify/vue": "^5.0.0",
     "@vueuse/core": "^14.2.1",
     "alova": "^3.5.0",
@@ -36,6 +37,7 @@
     "eslint-plugin-format": "^2.0.1",
     "git-commit-msg-linter": "^5.0.8",
     "lint-staged": "^16.2.7",
+    "mockjs": "^1.1.0",
     "simple-git-hooks": "^2.13.1",
     "typescript": "^5.9.3",
     "unocss": "66.6.2",

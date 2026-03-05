@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 /**
  * 对 env 环境变量进行类型声明
  */
@@ -7,8 +9,11 @@ declare namespace Env {
 
   // 声明 Env.ImportMeta 类型
   interface ImportMeta {
-    // 项目基础路径
+    // 项目基础路径前缀
     readonly VITE_BASE_URL: string
+
+    // 项目基础请求地址（一般是完整的项目的地址，包含端口号，分 测试/生产 环境）
+    readonly VITE_API_BASE_URL: string
 
     // 本地 svg 图标的前缀
     readonly VITE_ICON_LOCAL_PREFIX: string
@@ -29,7 +34,6 @@ declare namespace Env {
 
 /**
  * 声明 import.meta 类型
+ * NOTE 添加了 /// <reference types="vite/client" /> 并通过声明合并扩展了 ImportMetaEnv ，使其包含 Vite 内置变量（如 DEV , MODE ）以及自定义的 Env.ImportMeta 变量
  */
-interface ImportMeta {
-  readonly env: Env.ImportMeta
-}
+interface ImportMetaEnv extends Env.ImportMeta { }
